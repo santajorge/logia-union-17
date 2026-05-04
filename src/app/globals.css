@@ -1,0 +1,98 @@
+:root {
+  --color-institucional: #214D77;
+  --color-oro: #CFB53B;
+  --color-marfil: #F8F5F0;
+  --color-gris: #AAA8B1;
+  --color-profundo: #000000;
+}
+
+body {
+  background-color: var(--color-marfil);
+  color: var(--color-profundo);
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Solo para asegurarnos que los enlaces no queden azules por defecto */
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* --- TARJETAS DE CONTACTO ANIMADAS --- */
+.contacto-card {
+  background-color: rgba(248, 245, 240, 0.05);
+  border: 1px solid rgba(207, 181, 59, 0.3);
+  border-radius: 8px;
+  padding: 1.5rem 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  /* Usamos una curva cubic-bezier para que la animación se sienta "elástica" y moderna */
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  text-decoration: none;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Pseudo-elemento para un brillo sutil de fondo */
+.contacto-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: radial-gradient(circle at center, rgba(207, 181, 59, 0.15) 0%, transparent 70%);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  z-index: 0;
+}
+
+.contacto-card svg, .contacto-card span {
+  position: relative;
+  z-index: 1;
+  transition: transform 0.3s ease;
+}
+
+/* Efectos al pasar el mouse (Hover) */
+.contacto-card:hover {
+  border-color: var(--color-oro);
+  background-color: rgba(248, 245, 240, 0.08);
+  /* Se eleva la tarjeta y proyecta sombra dorada */
+  transform: translateY(-6px);
+  box-shadow: 0 12px 24px rgba(207, 181, 59, 0.15);
+}
+
+.contacto-card:hover::before {
+  opacity: 1;
+}
+
+/* El ícono hace un pequeño salto de escala al hacer hover */
+.contacto-card:hover svg {
+  transform: scale(1.15) translateY(-2px);
+}
+
+/* NUEVO: Efectos Hover para la web pública (soluciona el error de Client Component) */
+.link-gl:hover {
+  color: var(--color-oro) !important;
+}
+
+.btn-cta:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(207, 181, 59, 0.4);
+}
+
+/* --- GRILLA RESPONSIVE PARA CONTACTO --- */
+.grid-contacto {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+}
+
+/* Cuando la pantalla sea tamaño celular (600px o menos), pasa a 1 columna */
+@media (max-width: 600px) {
+  .grid-contacto {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,0 +1,32 @@
+[
+  {
+    "grado": 1,
+    "titulo": "La Piedra Bruta",
+    "texto": "Desbastar la piedra bruta, acercándola a una forma en relación con su destino: he aquí la tarea o trabajo simbólico al que tiene que dedicarse todo Aprendiz. Él mismo es la piedra bruta a la que tiene que convertir en una perfección interior."
+  },
+  {
+    "grado": 1,
+    "titulo": "La Disciplina del Silencio",
+    "texto": "La disciplina del silencio es una de las enseñanzas fundamentales de la Masonería. Aprender a callar es aprender a pensar y meditar en la Cámara de Aprendiz."
+  },
+  {
+    "grado": 2,
+    "titulo": "La Letra G y la Geometría",
+    "texto": "El Compañero Masón descubre el valor de la Geometría, ciencia que le permite comprender las proporciones del Universo y aplicar la exactitud a la Piedra Cúbica de su propia conducta."
+  },
+  {
+    "grado": 2,
+    "titulo": "La Estrella Flamígera",
+    "texto": "Símbolo del genio humano que se eleva hacia grandes cosas. Es la inteligencia del Compañero alumbrada por la luz de la Verdad, guiando sus pasos hacia la maestría de su propio ser."
+  },
+  {
+    "grado": 3,
+    "titulo": "La Acacia me es conocida",
+    "texto": "Símbolo de la inmortalidad y de la incorruptibilidad del espíritu. El Maestro Masón, habiendo superado los temores profanos, sabe que la verdadera esencia de su ser es eterna."
+  },
+  {
+    "grado": 3,
+    "titulo": "El Triunfo sobre la Ignorancia",
+    "texto": "Los tres malos compañeros acechan en todo momento. El Maestro sabe que solo con Sabiduría, Fuerza y Belleza se puede derrotar a la ignorancia, el fanatismo y la ambición que destruyen la Obra."
+  }
+]
