@@ -76,25 +76,25 @@ export default function Login() {
           )}
 
           <div>
-            <label style={{ display: 'block', fontSize: '12px', color: '#CDA434', marginBottom: '8px' }}>Correo Electrónico</label>
+            <label style={{ display: 'block', fontSize: '12px', color: '#F8F5F0', marginBottom: '8px' }}>Correo Electrónico</label>
             <input
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="tu@correo.com"
-              style={{ width: '100%', padding: '10px 12px', borderRadius: '6px', border: '1px solid #555', backgroundColor: '#AAA8B1', color: '#F5F5F5', fontSize: '14px', outline: 'none', boxSizing: 'border-box' }}
+              style={{ width: '100%', padding: '10px 12px', borderRadius: '6px', border: '1px solid #555', backgroundColor: '#AAA8B1', color: '#000000', fontSize: '14px', outline: 'none', boxSizing: 'border-box' }}
               required
             />
           </div>
 
           <div>
-            <label style={{ display: 'block', fontSize: '12px', color: '#CDA434', marginBottom: '8px' }}>Contraseña</label>
+            <label style={{ display: 'block', fontSize: '12px', color: '#F8F5F0', marginBottom: '8px' }}>Contraseña</label>
             <input
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="••••••••"
-              style={{ width: '100%', padding: '10px 12px', borderRadius: '6px', border: '1px solid #555', backgroundColor: '#AAA8B1', color: '#F5F5F5', fontSize: '14px', outline: 'none', boxSizing: 'border-box' }}
+              style={{ width: '100%', padding: '10px 12px', borderRadius: '6px', border: '1px solid #555', backgroundColor: '#AAA8B1', color: '#000000', fontSize: '14px', outline: 'none', boxSizing: 'border-box' }}
               required
             />
           </div>
