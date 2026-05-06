@@ -2,21 +2,18 @@
 
 import { useState, useEffect } from 'react'
 import { supabase } from '@/lib/supabase'
-import { Send } from 'lucide-react' // Opcional: un ícono lindo para el botón
+import { Send } from 'lucide-react'
 
 export default function DashboardTesoro() {
-  // --- LÓGICA DE NOTIFICACIONES ---
   const [enviando, setEnviando] = useState(false)
 
   const handleEnviarRecordatorios = async () => {
-    // Alerta para evitar que se envíe por hacer un clic accidental
     if (!window.confirm('¿Estás seguro de enviar el Estado de Cuenta actual a TODOS los hermanos activos?')) return;
     
     setEnviando(true)
     try {
-      // Reemplazá 'TU_CRON_SECRET' por la contraseña que tengas en tu .env.local
-      // Ej: logia763sanitas2025
-      const response = await fetch('/api/tesoreria/notificar?secret=logia763sanitas2025')
+      // Reemplazá 'TU_CRON_SECRET_AQUI' por la contraseña que pusiste en Vercel
+      const response = await fetch('/api/tesoreria/notificar?secret=TU_CRON_SECRET_AQUI')
       const data = await response.json()
       
       if (data.ok) {
@@ -30,8 +27,7 @@ export default function DashboardTesoro() {
       setEnviando(false)
     }
   }
-  // --------------------------------
-  // Sumamos balanceHistorico al estado inicial
+
   const [stats, setStats] = useState({ activos: 0, deudaTotal: 0, ingresosMes: 0, egresosMes: 0, balanceHistorico: 0 })
   const [ultimosIngresos, setUltimosIngresos] = useState([])
   const [ultimosEgresos, setUltimosEgresos] = useState([])
@@ -55,7 +51,6 @@ export default function DashboardTesoro() {
       const hoy = new Date()
       const inicioMes = `${hoy.getFullYear()}-${String(hoy.getMonth() + 1).padStart(2, '0')}-01`
 
-      // Traemos TODO el historial (solo monto y fecha para que sea súper rápido)
       const { data: todosPagos } = await supabase.from('pagos').select('monto, fecha')
       const { data: todosIngresosV } = await supabase.from('ingresos_varios').select('monto, fecha')
       const { data: todosEgresos } = await supabase.from('egresos').select('monto, fecha')
@@ -95,125 +90,158 @@ export default function DashboardTesoro() {
   const formatPesos = (monto) => new Intl.NumberFormat('es-AR', { style: 'currency', currency: 'ARS', maximumFractionDigits: 0 }).format(monto)
   const formatFecha = (fecha) => new Date(fecha + 'T00:00:00').toLocaleDateString('es-AR', { day: '2-digit', month: '2-digit' })
 
-  if (cargando) return <p style={{ fontSize: '13px', color: '#888' }}>Calculando finanzas...</p>
+  if (cargando) return <p style={{ fontSize: '14px', color: 'var(--color-gris)', fontFamily: 'var(--font-montserrat)' }}>Calculando finanzas del Taller...</p>
 
   const balanceMensual = stats.ingresosMes - stats.egresosMes;
 
   return (
-    <div>
-      <div style={{ marginBottom: '1.5rem' }}>
-        <h1 style={{ fontSize: '22px', fontWeight: '500', color: '#1a1a2e', marginBottom: '4px' }}>Dashboard de Tesorería</h1>
-        <p style={{ fontSize: '13px', color: '#888' }}>Resumen financiero de {mesActual} (E.·. V.·.) y estado general del Taller.</p>
+    <div style={{ fontFamily: 'var(--font-montserrat)' }}>
+      <div style={{ marginBottom: '2rem' }}>
+        <h1 style={{ fontSize: '26px', fontWeight: '600', color: 'var(--color-institucional)', marginBottom: '6px', fontFamily: 'var(--font-baskerville)' }}>
+          Dashboard de Tesorería
+        </h1>
+        <p style={{ fontSize: '14px', color: 'var(--color-gris)', margin: 0 }}>
+          Resumen financiero de {mesActual} (E.·. V.·.) y estado general del Taller.
+        </p>
       </div>
 
       {/* BOTÓN DE ENVIAR ESTADOS DE CUENTA */}
-        <button 
-          onClick={handleEnviarRecordatorios} 
-          disabled={enviando} 
-          style={{ 
-            backgroundColor: '#1a1a2e', 
-            color: '#CDA434', 
-            padding: '10px 20px', 
-            borderRadius: '8px', 
-            border: '1px solid #CDA434', 
-            cursor: enviando ? 'not-allowed' : 'pointer', 
-            fontWeight: '600', 
-            fontSize: '13px',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '8px',
-            opacity: enviando ? 0.7 : 1,
-            transition: 'all 0.2s',
-            marginBottom: '2.5rem' /* <--- ACÁ ESTÁ EL AIRE QUE FALTABA */
-          }}
-        >
-          <Send size={16} />
-          {enviando ? 'Enviando correos...' : 'Notificar Estados de Cuenta'}
-        </button>
+      <button 
+        onClick={handleEnviarRecordatorios} 
+        disabled={enviando} 
+        style={{ 
+          backgroundColor: 'var(--color-institucional)', 
+          color: 'var(--color-oro)', 
+          padding: '12px 24px', 
+          borderRadius: '8px', 
+          border: '1px solid var(--color-oro)', 
+          cursor: enviando ? 'not-allowed' : 'pointer', 
+          fontWeight: '600', 
+          fontSize: '14px',
+          display: 'inline-flex',
+          alignItems: 'center',
+          gap: '10px',
+          opacity: enviando ? 0.7 : 1,
+          transition: 'all 0.2s ease',
+          marginBottom: '2.5rem',
+          boxShadow: '0 4px 6px rgba(0,0,0,0.05)'
+        }}
+        onMouseOver={(e) => !enviando && (e.currentTarget.style.backgroundColor = '#111122')}
+        onMouseOut={(e) => !enviando && (e.currentTarget.style.backgroundColor = 'var(--color-institucional)')}
+      >
+        <Send size={18} />
+        {enviando ? 'Enviando correos...' : 'Notificar Estados de Cuenta'}
+      </button>
 
-      {/* GRID DE TARJETAS ACTUALIZADO CON FONDO TOTAL */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '1rem', marginBottom: '2rem' }}>
-        <Tarjeta label="Fondo en Caja (Total)" valor={formatPesos(stats.balanceHistorico)} color="#1a1a2e" />
-        <Tarjeta label="Hermanos Activos" valor={stats.activos} color="#1a1a2e" />
-        <Tarjeta label="Deuda a Recuperar" valor={formatPesos(stats.deudaTotal)} color="#A32D2D" />
-        <Tarjeta label="Ingresos del Mes" valor={formatPesos(stats.ingresosMes)} color="#3B6D11" />
-        <Tarjeta label="Egresos del Mes" valor={formatPesos(stats.egresosMes)} color="#A32D2D" />
-        <Tarjeta label="Balance del Mes" valor={formatPesos(balanceMensual)} color={balanceMensual >= 0 ? '#3B6D11' : '#A32D2D'} />
+      {/* GRID DE TARJETAS */}
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '1.5rem', marginBottom: '2.5rem' }}>
+        <Tarjeta label="Fondo en Caja (Total)" valor={formatPesos(stats.balanceHistorico)} color="var(--color-institucional)" />
+        <Tarjeta label="Hermanos Activos" valor={stats.activos} color="var(--color-institucional)" />
+        <Tarjeta label="Deuda a Recuperar" valor={formatPesos(stats.deudaTotal)} color="#B33A3A" />
+        <Tarjeta label="Ingresos del Mes" valor={formatPesos(stats.ingresosMes)} color="#4A8516" />
+        <Tarjeta label="Egresos del Mes" valor={formatPesos(stats.egresosMes)} color="#B33A3A" />
+        <Tarjeta label="Balance del Mes" valor={formatPesos(balanceMensual)} color={balanceMensual >= 0 ? '#4A8516' : '#B33A3A'} />
       </div>
 
       {/* BLOQUE DE ACTIVIDAD RECIENTE */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '1.5rem' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '1.5rem' }}>
         
         {/* TABLA: Últimos Pagos de Cápitas */}
-        <div style={{ backgroundColor: '#ffffff', border: '0.5px solid #e8e6e0', borderRadius: '12px', padding: '1.25rem' }}>
-          <h3 style={{ fontSize: '12px', color: '#888', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '1rem', marginTop: 0 }}>Últimos Pagos de Cápitas</h3>
+        <ContenedorTabla titulo="Últimos Pagos de Cápitas">
           {ultimosPagos.length === 0 ? (
-            <p style={{ fontSize: '12px', color: '#aaa' }}>Sin movimientos recientes.</p>
+            <MensajeVacio />
           ) : (
-            <table style={{ width: '100%', fontSize: '12px', borderCollapse: 'collapse' }}>
-              <tbody>
-                {ultimosPagos.map((p) => (
-                  <tr key={p.id} style={{ borderBottom: '0.5px solid #f0efe9' }}>
-                    <td style={{ padding: '8px 0', color: '#888', width: '40px' }}>{formatFecha(p.fecha)}</td>
-                    <td style={{ padding: '8px', color: '#1a1a2e', fontWeight: '500' }}>{p.hermanos?.apellido}, {p.hermanos?.nombre}</td>
-                    <td style={{ padding: '8px 0', textAlign: 'right', fontWeight: '600', color: '#3B6D11' }}>{formatPesos(p.monto)}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+            <Tabla datos={ultimosPagos} tipo="pago" formatFecha={formatFecha} formatPesos={formatPesos} />
           )}
-        </div>
+        </ContenedorTabla>
 
         {/* TABLA: Últimos Ingresos Varios */}
-        <div style={{ backgroundColor: '#ffffff', border: '0.5px solid #e8e6e0', borderRadius: '12px', padding: '1.25rem' }}>
-          <h3 style={{ fontSize: '12px', color: '#888', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '1rem', marginTop: 0 }}>Últimos Ingresos Varios</h3>
+        <ContenedorTabla titulo="Últimos Ingresos Varios">
           {ultimosIngresos.length === 0 ? (
-            <p style={{ fontSize: '12px', color: '#aaa' }}>Sin movimientos recientes.</p>
+            <MensajeVacio />
           ) : (
-            <table style={{ width: '100%', fontSize: '12px', borderCollapse: 'collapse' }}>
-              <tbody>
-                {ultimosIngresos.map((i) => (
-                  <tr key={i.id} style={{ borderBottom: '0.5px solid #f0efe9' }}>
-                    <td style={{ padding: '8px 0', color: '#888', width: '40px' }}>{formatFecha(i.fecha)}</td>
-                    <td style={{ padding: '8px', color: '#1a1a2e' }}>{i.descripcion}</td>
-                    <td style={{ padding: '8px 0', textAlign: 'right', fontWeight: '600', color: '#3B6D11' }}>{formatPesos(i.monto)}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+            <Tabla datos={ultimosIngresos} tipo="ingreso" formatFecha={formatFecha} formatPesos={formatPesos} />
           )}
-        </div>
+        </ContenedorTabla>
 
         {/* TABLA: Últimos Egresos */}
-        <div style={{ backgroundColor: '#ffffff', border: '0.5px solid #e8e6e0', borderRadius: '12px', padding: '1.25rem' }}>
-          <h3 style={{ fontSize: '12px', color: '#888', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '1rem', marginTop: 0 }}>Últimos Egresos</h3>
+        <ContenedorTabla titulo="Últimos Egresos">
           {ultimosEgresos.length === 0 ? (
-            <p style={{ fontSize: '12px', color: '#aaa' }}>Sin movimientos recientes.</p>
+            <MensajeVacio />
           ) : (
-            <table style={{ width: '100%', fontSize: '12px', borderCollapse: 'collapse' }}>
-              <tbody>
-                {ultimosEgresos.map((e) => (
-                  <tr key={e.id} style={{ borderBottom: '0.5px solid #f0efe9' }}>
-                    <td style={{ padding: '8px 0', color: '#888', width: '40px' }}>{formatFecha(e.fecha)}</td>
-                    <td style={{ padding: '8px', color: '#1a1a2e' }}>{e.descripcion}</td>
-                    <td style={{ padding: '8px 0', textAlign: 'right', fontWeight: '600', color: '#A32D2D' }}>- {formatPesos(e.monto)}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+            <Tabla datos={ultimosEgresos} tipo="egreso" formatFecha={formatFecha} formatPesos={formatPesos} />
           )}
-        </div>
+        </ContenedorTabla>
 
       </div>
     </div>
   )
 }
 
+// Componentes Auxiliares para mantener el código limpio
+
 function Tarjeta({ label, valor, color }) {
   return (
-    <div style={{ backgroundColor: '#ffffff', border: '0.5px solid #e8e6e0', borderRadius: '12px', padding: '1.5rem', display: 'flex', flexDirection: 'column', gap: '8px' }}>
-      <p style={{ fontSize: '12px', color: '#888', fontWeight: '500', textTransform: 'uppercase', letterSpacing: '0.05em', margin: 0 }}>{label}</p>
-      <p style={{ fontSize: '24px', fontWeight: '600', color: color, margin: 0 }}>{valor}</p>
+    <div style={{ 
+      backgroundColor: '#ffffff', 
+      border: '1px solid rgba(207, 181, 59, 0.2)', 
+      borderRadius: '12px', 
+      padding: '1.5rem', 
+      display: 'flex', 
+      flexDirection: 'column', 
+      gap: '8px',
+      boxShadow: '0 2px 4px rgba(0,0,0,0.02)'
+    }}>
+      <p style={{ fontSize: '11px', color: 'var(--color-gris)', fontWeight: '600', textTransform: 'uppercase', letterSpacing: '0.08em', margin: 0 }}>{label}</p>
+      <p style={{ fontSize: '26px', fontWeight: '700', color: color, margin: 0, fontFamily: 'var(--font-montserrat)' }}>{valor}</p>
     </div>
+  )
+}
+
+function ContenedorTabla({ titulo, children }) {
+  return (
+    <div style={{ 
+      backgroundColor: '#ffffff', 
+      border: '1px solid rgba(207, 181, 59, 0.2)', 
+      borderRadius: '12px', 
+      padding: '1.5rem',
+      boxShadow: '0 2px 8px rgba(0,0,0,0.03)'
+    }}>
+      <h3 style={{ fontSize: '13px', color: 'var(--color-institucional)', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '1.2rem', marginTop: 0 }}>
+        {titulo}
+      </h3>
+      {children}
+    </div>
+  )
+}
+
+function MensajeVacio() {
+  return <p style={{ fontSize: '13px', color: '#aaa', margin: 0 }}>Sin movimientos recientes.</p>
+}
+
+function Tabla({ datos, tipo, formatFecha, formatPesos }) {
+  return (
+    <table style={{ width: '100%', fontSize: '13px', borderCollapse: 'collapse' }}>
+      <tbody>
+        {datos.map((item) => (
+          <tr key={item.id} style={{ borderBottom: '1px solid #f0efe9' }}>
+            <td style={{ padding: '10px 0', color: 'var(--color-gris)', width: '45px', fontSize: '12px' }}>
+              {formatFecha(item.fecha)}
+            </td>
+            <td style={{ padding: '10px', color: 'var(--color-institucional)', fontWeight: '500' }}>
+              {tipo === 'pago' ? `${item.hermanos?.apellido}, ${item.hermanos?.nombre}` : item.descripcion}
+            </td>
+            <td style={{ 
+              padding: '10px 0', 
+              textAlign: 'right', 
+              fontWeight: '600', 
+              color: tipo === 'egreso' ? '#B33A3A' : '#4A8516' 
+            }}>
+              {tipo === 'egreso' ? '- ' : ''}{formatPesos(item.monto)}
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
   )
 }

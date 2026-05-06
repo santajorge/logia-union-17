@@ -6,7 +6,7 @@ import { supabase } from '@/lib/supabase'
 
 export default function NuevoPagoPage() {
   const params = useParams()
-  const { id } = params
+  const id = Array.isArray(params?.id) ? params.id : params?.id
   const router = useRouter()
 
   const [hermano, setHermano] = useState(null)
@@ -19,7 +19,7 @@ export default function NuevoPagoPage() {
 
   const [form, setForm] = useState({
     monto: '',
-    fecha: new Date().toISOString().split('T'),
+    fecha: new Date().toISOString().split('T')[0],
     notas: '',
     registrado_por: '',
   })
@@ -101,57 +101,61 @@ export default function NuevoPagoPage() {
     }, 1000)
   }
 
-  if (cargandoInicial) return <p style={{ fontSize: '13px', color: '#888', padding: '2rem' }}>Iniciando Tesorería...</p>
+  if (cargandoInicial) return <p style={{ fontSize: '14px', color: 'var(--color-gris)', padding: '2rem', fontFamily: 'var(--font-montserrat)' }}>Iniciando Tesorería...</p>
 
   return (
-    <div style={{ maxWidth: '600px' }}>
+    <div style={{ maxWidth: '600px', fontFamily: 'var(--font-montserrat)' }}>
       
       {/* Botón de regreso con navegación controlada */}
-      <div style={{ marginBottom: '1.5rem' }}>
+      <div style={{ marginBottom: '2rem' }}>
         <button 
           onClick={volverAlDetalle}
           style={{ 
             background: 'none', 
             border: 'none', 
-            color: '#666', 
-            fontSize: '12px', 
+            color: 'var(--color-gris)', 
+            fontSize: '13px', 
+            fontWeight: '500',
             cursor: 'pointer', 
             padding: 0,
-            marginBottom: '8px',
+            marginBottom: '12px',
             display: 'flex',
-            alignItems: 'center'
+            alignItems: 'center',
+            transition: 'color 0.2s'
           }}
+          onMouseOver={e => e.currentTarget.style.color = 'var(--color-institucional)'}
+          onMouseOut={e => e.currentTarget.style.color = 'var(--color-gris)'}
         >
           ← Volver al legajo de {hermano?.nombre}
         </button>
-        <h1 style={{ fontSize: '22px', fontWeight: '500', color: '#1a1a2e', marginBottom: '4px' }}>
+        <h1 style={{ fontSize: '28px', fontWeight: '600', color: 'var(--color-institucional)', marginBottom: '6px', fontFamily: 'var(--font-baskerville)' }}>
           Registrar Pago
         </h1>
-        <p style={{ fontSize: '13px', color: '#888' }}>
-          Asentando recibo para <strong style={{ color: '#1a1a2e' }}>{hermano?.nombre} {hermano?.apellido}</strong>.
+        <p style={{ fontSize: '14px', color: 'var(--color-gris)', margin: 0 }}>
+          Asentando recibo para <strong style={{ color: 'var(--color-institucional)', fontWeight: '600' }}>{hermano?.nombre} {hermano?.apellido}</strong>.
         </p>
       </div>
 
-      <div style={{ backgroundColor: '#ffffff', border: '0.5px solid #e8e6e0', borderRadius: '12px', padding: '1.5rem' }}>
+      <div style={{ backgroundColor: '#ffffff', border: '1px solid rgba(207, 181, 59, 0.2)', borderRadius: '12px', padding: '2rem', boxShadow: '0 2px 8px rgba(0,0,0,0.03)' }}>
         <form onSubmit={handleSubmit}>
 
           {error && (
-            <div style={{ backgroundColor: '#3a1c1c', color: '#e88e8e', padding: '0.75rem 1rem', borderRadius: '8px', fontSize: '13px', marginBottom: '1rem', border: '1px solid #e88e8e' }}>
+            <div style={{ backgroundColor: '#FCEBEB', color: '#B33A3A', padding: '1rem', borderRadius: '8px', fontSize: '13px', marginBottom: '1.5rem', border: '1px solid #F8D7D7', fontWeight: '500' }}>
               {error}
             </div>
           )}
 
           {exito && (
-            <div style={{ backgroundColor: '#EAF3DE', color: '#27500A', padding: '0.75rem 1rem', borderRadius: '8px', fontSize: '13px', marginBottom: '1rem' }}>
+            <div style={{ backgroundColor: '#EAF3DE', color: '#4A8516', padding: '1rem', borderRadius: '8px', fontSize: '13px', marginBottom: '1.5rem', border: '1px solid #D4EAB6', fontWeight: '500' }}>
               Pago registrado correctamente.
             </div>
           )}
 
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginBottom: '12px' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', marginBottom: '16px' }}>
             <div>
               <label style={estiloLabel}>Monto *</label>
               <input name="monto" type="number" value={form.monto} onChange={handleChange} style={estiloInput} />
-              {cuotaVigente > 0 && <p style={{ fontSize: '11px', color: '#888', marginTop: '4px' }}>Sugerido: {new Intl.NumberFormat('es-AR', { style: 'currency', currency: 'ARS', maximumFractionDigits: 0 }).format(cuotaVigente)}</p>}
+              {cuotaVigente > 0 && <p style={{ fontSize: '11px', color: 'var(--color-gris)', marginTop: '6px', fontWeight: '500' }}>Sugerido: {new Intl.NumberFormat('es-AR', { style: 'currency', currency: 'ARS', maximumFractionDigits: 0 }).format(cuotaVigente)}</p>}
             </div>
             <div>
               <label style={estiloLabel}>Fecha *</label>
@@ -159,7 +163,7 @@ export default function NuevoPagoPage() {
             </div>
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginBottom: '12px' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', marginBottom: '24px' }}>
             <div>
               <label style={estiloLabel}>Registrado por *</label>
               <input name="registrado_por" value={form.registrado_por} onChange={handleChange} placeholder="Tesorero / Colaborador" style={estiloInput} />
@@ -173,7 +177,23 @@ export default function NuevoPagoPage() {
           <button
             type="submit"
             disabled={cargando}
-            style={{ fontSize: '13px', padding: '12px 20px', borderRadius: '8px', border: 'none', backgroundColor: '#3B6D11', color: '#ffffff', cursor: cargando ? 'not-allowed' : 'pointer', opacity: cargando ? 0.6 : 1, width: '100%', fontWeight: '600', marginTop: '1rem' }}
+            style={{ 
+              fontSize: '14px', 
+              padding: '14px 20px', 
+              borderRadius: '8px', 
+              border: '1px solid var(--color-oro)', 
+              backgroundColor: 'var(--color-institucional)', 
+              color: 'var(--color-oro)', 
+              cursor: cargando ? 'not-allowed' : 'pointer', 
+              opacity: cargando ? 0.7 : 1, 
+              width: '100%', 
+              fontWeight: '600', 
+              marginTop: '0.5rem',
+              transition: 'all 0.2s',
+              boxShadow: '0 4px 6px rgba(0,0,0,0.05)'
+            }}
+            onMouseOver={e => !cargando && (e.currentTarget.style.backgroundColor = '#111122')}
+            onMouseOut={e => !cargando && (e.currentTarget.style.backgroundColor = 'var(--color-institucional)')}
           >
             {cargando ? 'Procesando...' : 'Confirmar ingreso al Tesoro'}
           </button>
@@ -183,5 +203,5 @@ export default function NuevoPagoPage() {
   )
 }
 
-const estiloLabel = { display: 'block', fontSize: '12px', color: '#666', marginBottom: '4px' }
-const estiloInput = { width: '100%', padding: '10px 12px', fontSize: '14px', border: '1px solid #c8c5b8', borderRadius: '8px', backgroundColor: '#fafaf8', color: '#1a1a2e', boxSizing: 'border-box', outline: 'none' }
+const estiloLabel = { display: 'block', fontSize: '12px', fontWeight: '600', color: 'var(--color-institucional)', marginBottom: '8px', fontFamily: 'var(--font-montserrat)' }
+const estiloInput = { width: '100%', padding: '12px 14px', fontSize: '14px', border: '1px solid #d1d0c8', borderRadius: '8px', backgroundColor: '#fff', color: 'var(--color-institucional)', boxSizing: 'border-box', outline: 'none', transition: 'border-color 0.2s', fontFamily: 'var(--font-montserrat)' }

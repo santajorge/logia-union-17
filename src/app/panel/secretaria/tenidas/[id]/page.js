@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { supabase } from '@/lib/supabase'
+import { ArrowLeft, FileText, Copy, Save, CheckCircle } from 'lucide-react'
 
 export default function PaseDeLista() {
   const params = useParams()
@@ -192,7 +193,7 @@ O.·. ${orador.apellido}
     alert('¡Acta copiada al portapapeles! Ya podés pegarla en Word o en tu editor de texto.')
   }
 
-  if (cargando) return <p style={{ padding: '2rem', fontSize: '13px', color: '#888' }}>Abriendo Balaustre...</p>
+  if (cargando) return <p style={{ padding: '2rem', fontSize: '14px', color: 'var(--color-gris)', fontFamily: 'var(--font-montserrat)' }}>Abriendo Balaustre...</p>
 
   const formatFecha = (fecha) => {
     return new Date(fecha + 'T00:00:00').toLocaleDateString('es-AR', {
@@ -201,24 +202,30 @@ O.·. ${orador.apellido}
   }
 
   return (
-    <div style={{ maxWidth: '800px', paddingBottom: '3rem' }}>
+    <div style={{ maxWidth: '850px', paddingBottom: '4rem', fontFamily: 'var(--font-montserrat)' }}>
       
-      <div style={{ marginBottom: '1.5rem' }}>
-        <Link href="/panel/secretaria/tenidas" style={{ fontSize: '12px', color: '#666', textDecoration: 'none', marginBottom: '8px', display: 'inline-block' }}>
-          ← Volver al Libro
+      <div style={{ marginBottom: '2rem' }}>
+        <Link 
+          href="/panel/secretaria/tenidas" 
+          style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', color: 'var(--color-gris)', fontSize: '13px', fontWeight: '500', textDecoration: 'none', marginBottom: '16px', transition: 'color 0.2s' }}
+          onMouseOver={e => e.currentTarget.style.color = 'var(--color-institucional)'}
+          onMouseOut={e => e.currentTarget.style.color = 'var(--color-gris)'}
+        >
+          <ArrowLeft size={16} /> Volver al Libro
         </Link>
+
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '1rem' }}>
           <div>
-            <h1 style={{ fontSize: '22px', fontWeight: '600', color: '#1a1a2e', margin: '0 0 4px', textTransform: 'capitalize' }}>
+            <h1 style={{ fontSize: '28px', fontWeight: '600', color: 'var(--color-institucional)', margin: '0 0 6px', textTransform: 'capitalize', fontFamily: 'var(--font-baskerville)' }}>
               Tenida {tenida?.tipo}
             </h1>
-            <p style={{ fontSize: '13px', color: '#888', margin: '0 0 12px 0' }}>
-              {tenida ? formatFecha(tenida.fecha) : ''} — Taller en Grado {tenida?.grado}
+            <p style={{ fontSize: '14px', color: 'var(--color-gris)', margin: '0 0 16px 0' }}>
+              <span style={{ fontWeight: '500' }}>{tenida ? formatFecha(tenida.fecha) : ''}</span> <span style={{ margin: '0 6px', color: '#d1d0c8' }}>|</span> Taller en Grado {tenida?.grado}
             </p>
             
             {tenida?.estado === 'abierta' ? (
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', backgroundColor: '#ffffff', padding: '6px 12px', borderRadius: '8px', border: '1px solid #e8e6e0', width: 'fit-content' }}>
-                <label style={{ fontSize: '11px', color: '#666', fontWeight: '600', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Balaustre Nº</label>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px', backgroundColor: '#ffffff', padding: '8px 14px', borderRadius: '8px', border: '1px solid rgba(207, 181, 59, 0.4)', width: 'fit-content', boxShadow: '0 2px 4px rgba(0,0,0,0.02)' }}>
+                <label style={{ fontSize: '11px', color: 'var(--color-institucional)', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Balaustre Nº</label>
                 <input
                     type="text"
                     value={tenida.acta_nro || ''}
@@ -226,73 +233,74 @@ O.·. ${orador.apellido}
                     placeholder="Ej: 145"
                     style={{ 
                         width: '80px', 
-                        padding: '4px 8px', 
-                        border: '1px solid #c8c5b8', 
-                        borderRadius: '4px', 
+                        padding: '6px 10px', 
+                        border: '1px solid #d1d0c8', 
+                        borderRadius: '6px', 
                         fontSize: '13px', 
                         outline: 'none', 
                         textAlign: 'center',
-                        color: '#1a1a2e',          /* <-- Magia oscura para el texto */
-                        backgroundColor: '#ffffff' /* <-- Fondo blanco puro */
+                        color: 'var(--color-institucional)',
+                        backgroundColor: '#ffffff',
+                        fontWeight: '600',
+                        fontFamily: 'var(--font-montserrat)'
                     }}
                 />
               </div>
             ) : (
-              <p style={{ fontSize: '13px', color: '#1a1a2e', fontWeight: '500', margin: 0 }}>
+              <p style={{ fontSize: '14px', color: 'var(--color-institucional)', fontWeight: '600', margin: 0, padding: '8px 14px', backgroundColor: '#fafaf8', border: '1px solid #e8e6e0', borderRadius: '8px', display: 'inline-block' }}>
                 {tenida?.acta_nro ? `Balaustre Nº ${tenida.acta_nro}` : 'Sin número de Balaustre'}
               </p>
             )}
 
           </div>
-          <span style={{ fontSize: '11px', fontWeight: '600', padding: '4px 12px', borderRadius: '12px', textTransform: 'uppercase', letterSpacing: '0.05em', backgroundColor: tenida?.estado === 'abierta' ? '#EAF3DE' : '#f5f4f0', color: tenida?.estado === 'abierta' ? '#27500A' : '#888' }}>
+          <span style={{ fontSize: '11px', fontWeight: '700', padding: '6px 14px', borderRadius: '12px', textTransform: 'uppercase', letterSpacing: '0.05em', backgroundColor: tenida?.estado === 'abierta' ? '#EAF3DE' : '#f5f4f0', color: tenida?.estado === 'abierta' ? '#4A8516' : 'var(--color-gris)', border: `1px solid ${tenida?.estado === 'abierta' ? '#D4EAB6' : '#d1d0c8'}` }}>
             Estado: {tenida?.estado}
           </span>
         </div>
       </div>
 
       {mensaje.texto && (
-        <div style={{ backgroundColor: mensaje.tipo === 'error' ? '#FCEBEB' : '#EAF3DE', color: mensaje.tipo === 'error' ? '#791F1F' : '#27500A', padding: '0.75rem 1rem', borderRadius: '8px', fontSize: '13px', marginBottom: '1.5rem' }}>
-          {mensaje.texto}
+        <div style={{ backgroundColor: mensaje.tipo === 'error' ? '#FCEBEB' : '#EAF3DE', color: mensaje.tipo === 'error' ? '#B33A3A' : '#4A8516', padding: '1rem', borderRadius: '8px', fontSize: '13px', fontWeight: '500', marginBottom: '2rem', border: `1px solid ${mensaje.tipo === 'error' ? '#F8D7D7' : '#D4EAB6'}`, display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <CheckCircle size={16} /> {mensaje.texto}
         </div>
       )}
 
       {/* CUADRO LÓGICO Y SEMÁFORO */}
-      <div style={{ backgroundColor: '#ffffff', border: '0.5px solid #e8e6e0', borderRadius: '12px', padding: '1rem' }}>
-        <p style={{ fontSize: '12px', color: '#888', textTransform: 'uppercase', letterSpacing: '0.05em', margin: '0 0 1rem 0.5rem', fontWeight: '500' }}>
+      <div style={{ backgroundColor: '#ffffff', border: '1px solid rgba(207, 181, 59, 0.2)', borderRadius: '12px', padding: '1.5rem', boxShadow: '0 2px 8px rgba(0,0,0,0.03)' }}>
+        <p style={{ fontSize: '12px', color: 'var(--color-institucional)', textTransform: 'uppercase', letterSpacing: '0.05em', margin: '0 0 1.25rem 0', fontWeight: '700', borderBottom: '1px solid rgba(207, 181, 59, 0.15)', paddingBottom: '10px' }}>
           Cuadro Lógico Habilitado ({hermanos.length})
         </p>
         
-        {hermanos.map((hermano) => {
-          // 1. Siempre calculamos su grado base (1, 2 o 3)
+        {hermanos.map((hermano, index) => {
           const gradoTexto = Number(hermano.grado) === 3 ? 'Maestro' : Number(hermano.grado) === 2 ? 'Compañero' : 'Aprendiz'
-          
-          // 2. ¿Tiene cargo? Solo da verdadero si el campo NO está vacío en Supabase
           const esOficial = hermano.rol_oficial && hermano.rol_oficial.trim() !== ''
 
           return (
-            <div key={hermano.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '12px 8px', borderBottom: '1px solid #f0efe9', flexWrap: 'wrap', gap: '1rem' }}>
+            <div 
+              key={hermano.id} 
+              style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '14px 10px', borderBottom: index !== hermanos.length -1 ? '1px solid #f0efe9' : 'none', flexWrap: 'wrap', gap: '1rem', transition: 'background-color 0.2s', borderRadius: '6px' }}
+              onMouseOver={e => e.currentTarget.style.backgroundColor = '#fafaf8'}
+              onMouseOut={e => e.currentTarget.style.backgroundColor = 'transparent'}
+            >
               <div>
-                <p style={{ margin: 0, fontSize: '14px', fontWeight: '500', color: '#1a1a2e' }}>
+                <p style={{ margin: 0, fontSize: '15px', fontWeight: '600', color: 'var(--color-institucional)' }}>
                   {hermano.apellido}, {hermano.nombre}
                 </p>
-                <p style={{ margin: '2px 0 0', fontSize: '11px', color: '#888' }}>
-                  {/* Imprime su grado base */}
+                <p style={{ margin: '4px 0 0', fontSize: '12px', color: 'var(--color-gris)' }}>
                   {gradoTexto} 
-                  
-                  {/* Si es oficial, le agrega el cargo dorado al lado */}
                   {esOficial && (
                     <>
-                      <span style={{ margin: '0 6px', color: '#c8c5b8' }}>|</span>
-                      <span style={{ color: '#CDA434', fontWeight: '600', letterSpacing: '0.02em' }}>{hermano.rol_oficial}</span>
+                      <span style={{ margin: '0 6px', color: '#d1d0c8' }}>|</span>
+                      <span style={{ color: 'var(--color-oro)', fontWeight: '600', letterSpacing: '0.02em' }}>{hermano.rol_oficial}</span>
                     </>
                   )}
                 </p>
               </div>
 
-              <div style={{ display: 'flex', gap: '4px', backgroundColor: '#fafaf8', padding: '4px', borderRadius: '8px', border: '1px solid #e8e6e0' }}>
-                <BotonEstado activo={asistencias[hermano.id] === 'presente'} color="#3B6D11" texto="Presente" onClick={() => cambiarEstado(hermano.id, 'presente')} deshabilitado={tenida?.estado === 'cerrada'} />
+              <div style={{ display: 'flex', gap: '6px', backgroundColor: '#fafaf8', padding: '6px', borderRadius: '8px', border: '1px solid #e8e6e0' }}>
+                <BotonEstado activo={asistencias[hermano.id] === 'presente'} color="#4A8516" texto="Presente" onClick={() => cambiarEstado(hermano.id, 'presente')} deshabilitado={tenida?.estado === 'cerrada'} />
                 <BotonEstado activo={asistencias[hermano.id] === 'ausente_justificado'} color="#854F0B" texto="Justificado" onClick={() => cambiarEstado(hermano.id, 'ausente_justificado')} deshabilitado={tenida?.estado === 'cerrada'} />
-                <BotonEstado activo={asistencias[hermano.id] === 'ausente_injustificado'} color="#A32D2D" texto="Ausente" onClick={() => cambiarEstado(hermano.id, 'ausente_injustificado')} deshabilitado={tenida?.estado === 'cerrada'} />
+                <BotonEstado activo={asistencias[hermano.id] === 'ausente_injustificado'} color="#B33A3A" texto="Ausente" onClick={() => cambiarEstado(hermano.id, 'ausente_injustificado')} deshabilitado={tenida?.estado === 'cerrada'} />
               </div>
             </div>
           )
@@ -300,45 +308,74 @@ O.·. ${orador.apellido}
       </div>
 
       {/* BARRA DE ACCIONES FLOTANTE */}
-      <div style={{ position: 'sticky', bottom: '2rem', display: 'flex', justifyContent: 'space-between', gap: '1rem', marginTop: '2rem', backgroundColor: '#ffffff', padding: '1rem', borderRadius: '12px', border: '1px solid #e8e6e0', boxShadow: '0 10px 25px rgba(0,0,0,0.05)', flexWrap: 'wrap' }}>
+      <div style={{ position: 'sticky', bottom: '2rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '1rem', marginTop: '2rem', backgroundColor: '#ffffff', padding: '1.25rem', borderRadius: '12px', border: '1px solid rgba(207, 181, 59, 0.3)', boxShadow: '0 10px 30px rgba(0,0,0,0.1)', flexWrap: 'wrap' }}>
         
         {/* BOTÓN MÁGICO DEL ACTA */}
-        <button onClick={generarBorradorActa} style={{ backgroundColor: '#ffffff', color: '#1a1a2e', border: '1px solid #1a1a2e', padding: '10px 20px', borderRadius: '8px', fontSize: '13px', fontWeight: '600', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px' }}>
-          📄 Generar Borrador de Acta
+        <button 
+          onClick={generarBorradorActa} 
+          style={{ backgroundColor: '#fafaf8', color: 'var(--color-institucional)', border: '1px solid var(--color-oro)', padding: '12px 20px', borderRadius: '8px', fontSize: '13px', fontWeight: '600', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px', transition: 'all 0.2s' }}
+          onMouseOver={e => { e.currentTarget.style.backgroundColor = 'var(--color-institucional)'; e.currentTarget.style.color = 'var(--color-oro)' }}
+          onMouseOut={e => { e.currentTarget.style.backgroundColor = '#fafaf8'; e.currentTarget.style.color = 'var(--color-institucional)' }}
+        >
+          <FileText size={18} /> Generar Borrador de Acta
         </button>
 
         {tenida?.estado === 'abierta' ? (
-          <div style={{ display: 'flex', gap: '1rem' }}>
-            <button onClick={() => guardarCambios(false)} disabled={guardando} style={{ backgroundColor: '#f5f4f0', color: '#1a1a2e', border: '1px solid #c8c5b8', padding: '10px 20px', borderRadius: '8px', fontSize: '13px', fontWeight: '500', cursor: guardando ? 'not-allowed' : 'pointer' }}>
-              Guardar Borrador
+          <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
+            <button 
+              onClick={() => guardarCambios(false)} 
+              disabled={guardando} 
+              style={{ backgroundColor: '#fafaf8', color: 'var(--color-gris)', border: '1px solid #d1d0c8', padding: '12px 20px', borderRadius: '8px', fontSize: '13px', fontWeight: '600', cursor: guardando ? 'not-allowed' : 'pointer', transition: 'background-color 0.2s', display: 'flex', alignItems: 'center', gap: '6px' }}
+              onMouseOver={e => !guardando && (e.currentTarget.style.backgroundColor = '#f0efe9')}
+              onMouseOut={e => !guardando && (e.currentTarget.style.backgroundColor = '#fafaf8')}
+            >
+              <Save size={16} /> Guardar Borrador
             </button>
-            <button onClick={() => { if (window.confirm('¿Cerrar Tenida? Ya no podrás modificar las asistencias.')) guardarCambios(true) }} disabled={guardando} style={{ backgroundColor: '#1a1a2e', color: '#ffffff', border: 'none', padding: '10px 20px', borderRadius: '8px', fontSize: '13px', fontWeight: '600', cursor: guardando ? 'not-allowed' : 'pointer' }}>
-              Guardar y Cerrar Tenida
+            <button 
+              onClick={() => { if (window.confirm('¿Cerrar Tenida? Ya no podrás modificar las asistencias.')) guardarCambios(true) }} 
+              disabled={guardando} 
+              style={{ backgroundColor: 'var(--color-institucional)', color: 'var(--color-oro)', border: '1px solid var(--color-oro)', padding: '12px 24px', borderRadius: '8px', fontSize: '13px', fontWeight: '600', cursor: guardando ? 'not-allowed' : 'pointer', transition: 'all 0.2s', display: 'flex', alignItems: 'center', gap: '6px', boxShadow: '0 4px 6px rgba(0,0,0,0.05)' }}
+              onMouseOver={e => !guardando && (e.currentTarget.style.backgroundColor = '#111122')}
+              onMouseOut={e => !guardando && (e.currentTarget.style.backgroundColor = 'var(--color-institucional)')}
+            >
+              <CheckCircle size={16} /> Guardar y Cerrar Tenida
             </button>
           </div>
         ) : (
-          <p style={{ fontSize: '13px', color: '#888', fontStyle: 'italic', margin: 'auto 0' }}>Balaustre cerrado y archivado.</p>
+          <p style={{ fontSize: '13px', color: 'var(--color-gris)', fontStyle: 'italic', margin: 'auto 0', fontWeight: '500' }}>Balaustre cerrado y archivado.</p>
         )}
       </div>
 
       {/* MODAL DEL ACTA GENERADA */}
       {mostrarActa && (
-        <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: 'rgba(26, 26, 46, 0.8)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000, padding: '2rem' }}>
-          <div style={{ backgroundColor: '#ffffff', padding: '2rem', borderRadius: '12px', width: '100%', maxWidth: '700px', maxHeight: '90vh', display: 'flex', flexDirection: 'column' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
-              <h2 style={{ fontSize: '18px', margin: 0, color: '#1a1a2e' }}>Borrador del Balaustre</h2>
-              <button onClick={() => setMostrarActa(false)} style={{ background: 'none', border: 'none', fontSize: '20px', cursor: 'pointer', color: '#888' }}>✖</button>
+        <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: 'rgba(0, 0, 0, 0.6)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000, padding: '2rem', backdropFilter: 'blur(3px)' }}>
+          <div style={{ backgroundColor: '#ffffff', padding: '2rem', borderRadius: '12px', width: '100%', maxWidth: '750px', maxHeight: '90vh', display: 'flex', flexDirection: 'column', boxShadow: '0 15px 40px rgba(0,0,0,0.2)' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem', borderBottom: '1px solid rgba(207, 181, 59, 0.15)', paddingBottom: '12px' }}>
+              <h2 style={{ fontSize: '20px', margin: 0, color: 'var(--color-institucional)', fontFamily: 'var(--font-baskerville)', fontWeight: '600' }}>Borrador del Balaustre</h2>
+              <button 
+                onClick={() => setMostrarActa(false)} 
+                style={{ background: 'none', border: 'none', fontSize: '20px', cursor: 'pointer', color: 'var(--color-gris)', transition: 'color 0.2s' }}
+                onMouseOver={e => e.currentTarget.style.color = '#B33A3A'}
+                onMouseOut={e => e.currentTarget.style.color = 'var(--color-gris)'}
+              >
+                ✖
+              </button>
             </div>
             
             <textarea 
               readOnly 
               value={textoActa} 
-              style={{ flex: 1, width: '100%', padding: '1rem', fontFamily: 'monospace', fontSize: '13px', border: '1px solid #c8c5b8', borderRadius: '8px', backgroundColor: '#fafaf8', color: '#444', resize: 'none', outline: 'none', lineHeight: '1.6' }}
+              style={{ flex: 1, width: '100%', padding: '1.5rem', fontFamily: 'monospace', fontSize: '13px', border: '1px solid #d1d0c8', borderRadius: '8px', backgroundColor: '#fafaf8', color: 'var(--color-institucional)', resize: 'none', outline: 'none', lineHeight: '1.6', boxSizing: 'border-box' }}
             />
             
-            <div style={{ marginTop: '1rem', display: 'flex', justifyContent: 'flex-end' }}>
-              <button onClick={copiarAlPortapapeles} style={{ backgroundColor: '#CDA434', color: '#1a1a2e', border: 'none', padding: '10px 24px', borderRadius: '8px', fontSize: '14px', fontWeight: '600', cursor: 'pointer' }}>
-                Copiar al Portapapeles
+            <div style={{ marginTop: '1.5rem', display: 'flex', justifyContent: 'flex-end' }}>
+              <button 
+                onClick={copiarAlPortapapeles} 
+                style={{ backgroundColor: 'var(--color-institucional)', color: 'var(--color-oro)', border: '1px solid var(--color-oro)', padding: '12px 24px', borderRadius: '8px', fontSize: '14px', fontWeight: '600', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px', transition: 'all 0.2s' }}
+                onMouseOver={e => e.currentTarget.style.backgroundColor = '#111122'}
+                onMouseOut={e => e.currentTarget.style.backgroundColor = 'var(--color-institucional)'}
+              >
+                <Copy size={16} /> Copiar al Portapapeles
               </button>
             </div>
           </div>
@@ -356,15 +393,28 @@ function BotonEstado({ activo, color, texto, onClick, deshabilitado }) {
       disabled={deshabilitado}
       style={{
         backgroundColor: activo ? color : 'transparent',
-        color: activo ? '#ffffff' : '#888',
+        color: activo ? '#ffffff' : 'var(--color-gris)',
         border: 'none',
-        padding: '6px 12px',
+        padding: '8px 14px',
         borderRadius: '6px',
         fontSize: '11px',
-        fontWeight: activo ? '600' : '500',
+        fontWeight: '700',
+        textTransform: 'uppercase',
+        letterSpacing: '0.02em',
         cursor: deshabilitado ? 'default' : 'pointer',
         transition: 'all 0.2s',
-        opacity: deshabilitado && !activo ? 0.4 : 1
+        opacity: deshabilitado && !activo ? 0.5 : 1,
+        fontFamily: 'var(--font-montserrat)'
+      }}
+      onMouseOver={e => {
+        if (!deshabilitado && !activo) {
+          e.currentTarget.style.backgroundColor = '#e8e6e0'
+        }
+      }}
+      onMouseOut={e => {
+        if (!deshabilitado && !activo) {
+          e.currentTarget.style.backgroundColor = 'transparent'
+        }
       }}
     >
       {texto}

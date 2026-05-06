@@ -2,31 +2,451 @@
   {
     "grado": 1,
     "titulo": "La Piedra Bruta",
-    "texto": "Desbastar la piedra bruta, acercándola a una forma en relación con su destino: he aquí la tarea o trabajo simbólico al que tiene que dedicarse todo Aprendiz. Él mismo es la piedra bruta a la que tiene que convertir en una perfección interior."
+    "texto": "La piedra bruta representa nuestra personalidad profana, llena de asperezas. El primer trabajo consiste en desbastarla para que sus formas se acerquen a la piedra cúbica, símbolo de la perfección humana."
   },
   {
     "grado": 1,
-    "titulo": "La Disciplina del Silencio",
-    "texto": "La disciplina del silencio es una de las enseñanzas fundamentales de la Masonería. Aprender a callar es aprender a pensar y meditar en la Cámara de Aprendiz."
+    "titulo": "El Cuarto de Reflexiones",
+    "texto": "Es el símbolo del descenso al centro de la tierra o al interior de nosotros mismos. Representa el silencio necesario donde el hombre se enfrenta a sus propias sombras para encontrar la luz interior."
   },
   {
-    "grado": 2,
-    "titulo": "La Letra G y la Geometría",
-    "texto": "El Compañero Masón descubre el valor de la Geometría, ciencia que le permite comprender las proporciones del Universo y aplicar la exactitud a la Piedra Cúbica de su propia conducta."
+    "grado": 1,
+    "titulo": "V.I.T.R.I.O.L.",
+    "texto": "Visita Interiora Terrae Rectificando Invenies Occultum Lapidem. Es la invitación alquímica a purificar nuestro interior para descubrir la piedra filosofal de la verdadera sabiduría."
+  },
+  {
+    "grado": 1,
+    "titulo": "El Despojo de los Metales",
+    "texto": "Simboliza la liberación de los apegos materiales, los prejuicios y las pasiones profanas. Solo desnudo de estas ataduras el espíritu puede recibir la verdadera luz."
+  },
+  {
+    "grado": 1,
+    "titulo": "La Venda en los Ojos",
+    "texto": "Representa la ignorancia humana antes de la iniciación. Nos recuerda que, en el mundo profano, caminamos a oscuras guiados por ilusiones y no por la realidad espiritual."
+  },
+  {
+    "grado": 1,
+    "titulo": "El Mazo",
+    "texto": "El mazo simboliza la fuerza de voluntad activa. Es la energía que impulsa el trabajo sobre la piedra bruta, la decisión firme de transformar nuestros defectos."
+  },
+  {
+    "grado": 1,
+    "titulo": "El Cincel",
+    "texto": "Representa la inteligencia y el discernimiento. El cincel dirige la fuerza ciega del mazo, asegurando que cada golpe tenga un propósito constructivo y educado."
+  },
+  {
+    "grado": 1,
+    "titulo": "La Plomada",
+    "texto": "Simboliza la rectitud moral, la búsqueda de la verdad en profundidad y la atracción hacia el centro espiritual. Nos enseña a mantenernos erguidos ante las adversidades."
+  },
+  {
+    "grado": 1,
+    "titulo": "El Nivel",
+    "texto": "Es el emblema de la igualdad fraterna. Nos recuerda que todos los hombres están sometidos a las mismas leyes de la naturaleza y que las jerarquías terrenales son ilusorias."
+  },
+  {
+    "grado": 1,
+    "titulo": "La Escuadra",
+    "texto": "Representa la rectitud en la acción, el equilibrio y la armonía entre nuestros pensamientos y nuestras obras. Es la medida que debe regir toda conducta masónica."
+  },
+  {
+    "grado": 1,
+    "titulo": "El Compás",
+    "texto": "Simboliza el espíritu, la medida de nuestras relaciones con los demás y con el universo. El compás traza los límites dentro de los cuales debemos mantener nuestros deseos."
+  },
+  {
+    "grado": 1,
+    "titulo": "El Mandil",
+    "texto": "El mandil blanco es el emblema del trabajo y la pureza. Al ceñirlo, el Aprendiz se compromete a una vida de laboriosidad constante y rectitud moral inmaculada."
+  },
+  {
+    "grado": 1,
+    "titulo": "El Silencio",
+    "texto": "El silencio es la primera prueba y el primer deber del Aprendiz. En la quietud de las palabras nace la capacidad de escuchar la voz de la intuición y comprender los símbolos."
+  },
+  {
+    "grado": 1,
+    "titulo": "La Marcha del Aprendiz",
+    "texto": "Sus pasos vacilantes en línea recta simbolizan el esfuerzo del neófito por avanzar desde las tinieblas de Occidente hacia la luz de Oriente, con prudencia y firmeza."
+  },
+  {
+    "grado": 1,
+    "titulo": "La Batería",
+    "texto": "Simboliza la aclamación de la alegría fraterna y, al mismo tiempo, el choque de la energía espiritual que despierta la conciencia en el trabajo de la Logia."
+  },
+  {
+    "grado": 1,
+    "titulo": "La Palabra Sagrada",
+    "texto": "Es la fuerza que reside en nuestro interior. No se pronuncia a la ligera, sino que se deletrea, indicando que la Verdad se descubre paso a paso, letra a letra."
+  },
+  {
+    "grado": 1,
+    "titulo": "El Toque",
+    "texto": "El toque del Aprendiz pide la luz a través del contacto fraterno. Es el reconocimiento silencioso de quienes comparten el mismo sendero de búsqueda interior."
+  },
+  {
+    "grado": 1,
+    "titulo": "El Mediodía",
+    "texto": "La hora de apertura de los trabajos es el momento de mayor iluminación, cuando el sol está en su cenit y no proyecta sombras, simbolizando la claridad de la mente."
+  },
+  {
+    "grado": 1,
+    "titulo": "La Medianoche",
+    "texto": "Es la hora en que los trabajos se cierran, indicando el descanso físico, pero también el misterio profundo en el que el espíritu se retira a meditar lo aprendido."
+  },
+  {
+    "grado": 1,
+    "titulo": "El Pavimento Mosaico",
+    "texto": "La alternancia de cuadros blancos y negros representa la dualidad del mundo manifestado: luz y oscuridad, alegría y dolor. Nos enseña a caminar sobre ellos con ecuanimidad."
+  },
+  {
+    "grado": 1,
+    "titulo": "La Cuerda de Nudos",
+    "texto": "Simboliza la cadena de unión fraterna que enlaza a todos los masones del mundo. Sus nudos son los vínculos de amor que nos sostienen en nuestro trabajo."
+  },
+  {
+    "grado": 1,
+    "titulo": "El Sol",
+    "texto": "El astro rey representa la Razón Universal, la inteligencia que ilumina el mundo material y el principio activo de la creación que todo lo fecunda."
+  },
+  {
+    "grado": 1,
+    "titulo": "La Luna",
+    "texto": "Representa la imaginación, la receptividad y el subconsciente. Refleja la luz del Sol, así como nuestra mente debe reflejar la sabiduría del espíritu."
+  },
+  {
+    "grado": 1,
+    "titulo": "El Venerable Maestro",
+    "texto": "Situado en Oriente, es la fuente de luz y sabiduría en la Logia. Representa la conciencia espiritual que debe dirigir y gobernar nuestra vida entera."
+  },
+  {
+    "grado": 1,
+    "titulo": "El Primer Vigilante",
+    "texto": "Representa la Fuerza y se sienta en Occidente para pagar a los obreros. Simboliza el alma humana que recibe la inspiración divina y la manifiesta en acción."
+  },
+  {
+    "grado": 1,
+    "titulo": "El Segundo Vigilante",
+    "texto": "En el Sur, representa la Belleza y observa al sol en su meridiano. Es la inteligencia que vela por la armonía y el orden de los trabajos durante el descanso."
+  },
+  {
+    "grado": 1,
+    "titulo": "El Libro de la Ley",
+    "texto": "Más que un texto religioso específico, simboliza la Tradición Sagrada y la Ley Moral Universal que guía la conciencia de todo hombre libre y de buenas costumbres."
+  },
+  {
+    "grado": 1,
+    "titulo": "La Espada Flamígera",
+    "texto": "Es el emblema de la purificación por el fuego y de la autoridad espiritual. Su luz ondulante protege el Templo de la ignorancia profana."
+  },
+  {
+    "grado": 1,
+    "titulo": "La Edad del Aprendiz",
+    "texto": "Tener tres años simbólicos significa haber comprendido la Trinidad fundamental de la vida y el universo. Es la edad del inicio consciente en la senda de la virtud."
+  },
+  {
+    "grado": 1,
+    "titulo": "El Despertar",
+    "texto": "El propósito del primer grado es despertar al hombre del letargo de la vida automática. Es abrir los ojos a la realidad de su propio potencial divino y transformador."
   },
   {
     "grado": 2,
     "titulo": "La Estrella Flamígera",
-    "texto": "Símbolo del genio humano que se eleva hacia grandes cosas. Es la inteligencia del Compañero alumbrada por la luz de la Verdad, guiando sus pasos hacia la maestría de su propio ser."
+    "texto": "Es el símbolo supremo del Compañero. Representa al hombre regenerado y luminoso que irradia luz propia, dominando los cinco elementos mediante su voluntad espiritual."
+  },
+  {
+    "grado": 2,
+    "titulo": "La Letra G",
+    "texto": "Centro de la Estrella, representa a la Geometría, la Gnosis, la Generación y la Gravedad. Es el conocimiento profundo de los principios divinos que rigen el cosmos."
+  },
+  {
+    "grado": 2,
+    "titulo": "Los Cinco Viajes",
+    "texto": "Representan las etapas de estudio e instrucción del Compañero. Un recorrido a través de las artes, las ciencias y los sentidos para comprender el universo y a sí mismo."
+  },
+  {
+    "grado": 2,
+    "titulo": "El Mazo y el Cincel",
+    "texto": "En este grado, su uso ya no es para desbastar, sino para esculpir y dar forma perfecta a la piedra, aplicando la inteligencia (cincel) guiada por una voluntad firme (mazo)."
+  },
+  {
+    "grado": 2,
+    "titulo": "La Regla y el Compás",
+    "texto": "La Regla representa la rectitud y la precisión de la ley moral; el Compás, ahora más abierto, simboliza un mayor grado de libertad del espíritu sobre la materia."
+  },
+  {
+    "grado": 2,
+    "titulo": "La Palanca",
+    "texto": "Simboliza el poder inmenso de la inteligencia y la fe. Una fuerza bien aplicada, sostenida en el punto de apoyo de la Sabiduría, puede elevar las cargas más pesadas."
+  },
+  {
+    "grado": 2,
+    "titulo": "La Escuadra y la Plomada",
+    "texto": "Herramientas de comprobación. La Escuadra asegura la rectitud horizontal de nuestras acciones, mientras la Plomada verifica nuestra alineación vertical con lo Superior."
+  },
+  {
+    "grado": 2,
+    "titulo": "El Nivel en el Compañero",
+    "texto": "Además de igualdad, representa la capacidad de nivelar nuestras emociones y pensamientos, manteniendo una serenidad imperturbable frente a los altibajos de la vida."
+  },
+  {
+    "grado": 2,
+    "titulo": "Los Cinco Sentidos",
+    "texto": "Vista, oído, tacto, olfato y gusto son nuestras ventanas al mundo material. El Compañero aprende a dominarlos para que no lo engañen, convirtiéndolos en instrumentos de la Mente."
+  },
+  {
+    "grado": 2,
+    "titulo": "La Vista",
+    "texto": "El más noble de los sentidos, representa la inteligencia clarividente, capaz de penetrar más allá de las formas superficiales para captar la esencia de las cosas."
+  },
+  {
+    "grado": 2,
+    "titulo": "El Oído",
+    "texto": "Asociado a la recepción de la enseñanza. Es la capacidad de escuchar la armonía del universo y la voz silenciosa de nuestra propia conciencia superior."
+  },
+  {
+    "grado": 2,
+    "titulo": "El Tacto",
+    "texto": "El sentido de la realidad y la experiencia material. Nos recuerda la necesidad de la acción práctica y el contacto fraterno directo con nuestros semejantes."
+  },
+  {
+    "grado": 2,
+    "titulo": "El Olfato y el Gusto",
+    "texto": "Simbolizan el discernimiento sutil y la asimilación. Nos enseñan a saborear la verdad y rechazar lo tóxico, purificando nuestros deseos internos."
+  },
+  {
+    "grado": 2,
+    "titulo": "Las Siete Artes Liberales",
+    "texto": "Gramática, Retórica, Lógica, Aritmética, Geometría, Música y Astronomía. Son el programa educativo de la antigüedad clásica para liberar la mente del error."
+  },
+  {
+    "grado": 2,
+    "titulo": "La Gramática y la Lógica",
+    "texto": "La Gramática estructura nuestro pensamiento; la Lógica le da coherencia. Ambas son fundamentales para construir una mente capaz de discernir la Verdad."
+  },
+  {
+    "grado": 2,
+    "titulo": "La Retórica",
+    "texto": "El arte de persuadir. En el Compañero, representa la capacidad de comunicar la luz y la verdad con elocuencia, inspirando a otros hacia el bien."
+  },
+  {
+    "grado": 2,
+    "titulo": "La Aritmética y la Geometría",
+    "texto": "La ciencia de los números y el espacio. Nos revelan el orden matemático subyacente en la creación, donde todo es peso, número y medida."
+  },
+  {
+    "grado": 2,
+    "titulo": "La Música",
+    "texto": "Representa la armonía de las esferas. Nos enseña a afinar los instrumentos de nuestra propia personalidad para resonar en consonancia con el plan divino."
+  },
+  {
+    "grado": 2,
+    "titulo": "La Astronomía",
+    "texto": "El estudio de los cielos. Nos eleva hacia lo infinito, mostrando la inmensidad del Arquitecto y la relatividad de nuestras preocupaciones terrenales."
+  },
+  {
+    "grado": 2,
+    "titulo": "La Piedra Cúbica",
+    "texto": "Es el resultado del trabajo del Compañero. Representa la personalidad ya pulida, estable en todas sus caras, lista para encajar perfectamente en la construcción del Templo."
+  },
+  {
+    "grado": 2,
+    "titulo": "La Espiga de Trigo",
+    "texto": "Situada junto a la cascada de agua, es el símbolo de la recompensa y la fecundidad. Representa la cosecha abundante que sigue al trabajo honesto y constante."
+  },
+  {
+    "grado": 2,
+    "titulo": "La Palabra de Pase",
+    "texto": "Es la llave que permite el tránsito entre el mundo material y el espiritual. Significa abundancia y riqueza interior que solo se logra mediante el mérito."
+  },
+  {
+    "grado": 2,
+    "titulo": "El Trabajo del Compañero",
+    "texto": "El Aprendiz trabaja la materia bruta; el Compañero trabaja su mente. Su deber es instruirse sin descanso en los misterios de la Naturaleza y la Ciencia."
+  },
+  {
+    "grado": 2,
+    "titulo": "El Salario del Compañero",
+    "texto": "Se recibe en la Columna J. No es oro profano, sino luz intelectual, crecimiento espiritual y la satisfacción íntima del deber cumplido en la Gran Obra."
+  },
+  {
+    "grado": 2,
+    "titulo": "El Número Cinco",
+    "texto": "Es el número que define al grado. Representa al Microcosmos, la figura humana de pie con brazos y piernas extendidos, el equilibrio del espíritu sobre los cuatro elementos."
+  },
+  {
+    "grado": 2,
+    "titulo": "El Arte Real",
+    "texto": "Así se denomina al trabajo masónico avanzado. Es el arte de gobernarse a sí mismo, de dominar las propias pasiones para erigirse en soberano de su propio destino."
+  },
+  {
+    "grado": 2,
+    "titulo": "El Orden de la Naturaleza",
+    "texto": "El Compañero debe observar las leyes naturales para comprender las espirituales. Como es arriba es abajo; el universo visible es reflejo del invisible."
+  },
+  {
+    "grado": 2,
+    "titulo": "La Sabiduría",
+    "texto": "No es la mera acumulación de datos, sino la aplicación práctica del conocimiento para el bien común. Es vivir en armonía con los principios de la Geometría Sagrada."
+  },
+  {
+    "grado": 2,
+    "titulo": "La Edad del Compañero",
+    "texto": "Los cinco años simbólicos representan la madurez del entendimiento, el dominio de los sentidos y la capacidad de participar activamente en la construcción social."
+  },
+  {
+    "grado": 2,
+    "titulo": "La Construcción del Templo",
+    "texto": "El Compañero ya no es un simple peón; es un artesano calificado. Sabe que el Templo a construir no es de piedra física, sino el Templo Ideal de la Humanidad."
   },
   {
     "grado": 3,
-    "titulo": "La Acacia me es conocida",
-    "texto": "Símbolo de la inmortalidad y de la incorruptibilidad del espíritu. El Maestro Masón, habiendo superado los temores profanos, sabe que la verdadera esencia de su ser es eterna."
+    "titulo": "La Leyenda de Hiram",
+    "texto": "Es el mito central de la maestría. Hiram representa la Verdad, la Luz y la Conciencia Superior, asesinada constantemente por la ignorancia, el fanatismo y la ambición."
   },
   {
     "grado": 3,
-    "titulo": "El Triunfo sobre la Ignorancia",
-    "texto": "Los tres malos compañeros acechan en todo momento. El Maestro sabe que solo con Sabiduría, Fuerza y Belleza se puede derrotar a la ignorancia, el fanatismo y la ambición que destruyen la Obra."
+    "titulo": "Los Tres Asesinos",
+    "texto": "La Ignorancia, la Hipocresía y la Ambición son los enemigos internos que destruyen nuestra obra espiritual. Deben ser combatidos sin descanso por el verdadero Maestro."
+  },
+  {
+    "grado": 3,
+    "titulo": "La Rama de Acacia",
+    "texto": "Símbolo de la inmortalidad del alma y de la inocencia. Florece sobre la tumba para recordarnos que la vida espiritual es eterna y no perece con la muerte física."
+  },
+  {
+    "grado": 3,
+    "titulo": "La Muerte Iniciática",
+    "texto": "Para alcanzar la maestría, el yo personal ilusorio debe morir. Es el sacrificio de las ataduras egóicas para permitir que renazca el Hombre Nuevo, puro y universal."
+  },
+  {
+    "grado": 3,
+    "titulo": "La Cámara del Medio",
+    "texto": "Es el santuario interior de la conciencia humana. En el centro de nuestro ser es donde se encuentra la verdadera Sabiduría y donde lloramos la pérdida de la Palabra."
+  },
+  {
+    "grado": 3,
+    "titulo": "La Palabra Perdida",
+    "texto": "Simboliza el conocimiento supremo y la conexión directa con lo Divino que la humanidad ha olvidado. La misión del Maestro es buscarla incesantemente en su interior."
+  },
+  {
+    "grado": 3,
+    "titulo": "La Resurrección de Hiram",
+    "texto": "El Maestro se levanta de la tumba de los vicios y pasiones como Hiram. Es el triunfo definitivo de la Vida sobre la Muerte y del Espíritu sobre la Materia."
+  },
+  {
+    "grado": 3,
+    "titulo": "El Número Siete",
+    "texto": "Representa la perfección y la plenitud. El Maestro masón completa su ciclo de siete años simbólicos, logrando la armonía de las siete notas, los siete colores y los siete principios."
+  },
+  {
+    "grado": 3,
+    "titulo": "El Sepulcro",
+    "texto": "No es un lugar de terror, sino el crisol de la transformación alquímica. Representa el silencio más profundo de la mente, indispensable para el renacimiento espiritual."
+  },
+  {
+    "grado": 3,
+    "titulo": "Las Lágrimas de Plata",
+    "texto": "Simbolizan el dolor que purifica el alma. Son el llanto de la viuda y de la naturaleza ante la pérdida temporal de la luz solar y de la verdad divina."
+  },
+  {
+    "grado": 3,
+    "titulo": "La Calavera y los Huesos cruzados",
+    "texto": "Son emblemas de la mortalidad física y de la vanidad de las glorias terrenales. Nos enseñan a valorar lo eterno por encima de lo efímero."
+  },
+  {
+    "grado": 3,
+    "titulo": "Los Tres Golpes Fatales",
+    "texto": "Dados con la regla, la escuadra y el mazo. Representan la perversión de nuestras propias herramientas (la ley, la rectitud y la voluntad) cuando son guiadas por el egoísmo."
+  },
+  {
+    "grado": 3,
+    "titulo": "Los Cinco Puntos de Perfección",
+    "texto": "Simbolizan la comunión absoluta y la solidaridad indisoluble entre los Maestros. Es la unión física y espiritual que transmite la verdadera vida."
+  },
+  {
+    "grado": 3,
+    "titulo": "La Edad del Maestro",
+    "texto": "Siete años y más. Significa haber trascendido los ciclos temporales ordinarios para entrar en el dominio de la eternidad y el trabajo desinteresado."
+  },
+  {
+    "grado": 3,
+    "titulo": "El Cuadro de la Logia",
+    "texto": "En este grado, el cuadro fúnebre nos recuerda que toda construcción humana en el mundo material está destinada a perecer; solo sobrevive lo que construimos en el Espíritu."
+  },
+  {
+    "grado": 3,
+    "titulo": "El Compás sobre la Escuadra",
+    "texto": "Indica que el espíritu ha dominado finalmente a la materia. El Maestro actúa motivado únicamente por principios superiores, habiendo subyugado sus pasiones terrenales."
+  },
+  {
+    "grado": 3,
+    "titulo": "La Regeneración",
+    "texto": "No basta con mejorar, el Maestro debe regenerarse. Es un cambio ontológico, una transmutación completa de su naturaleza para ser un canal de la Luz Universal."
+  },
+  {
+    "grado": 3,
+    "titulo": "El Fuego Sagrado",
+    "texto": "El Maestro custodia el fuego de la Tradición Iniciática. Es su deber mantener viva la llama del conocimiento para iluminar a las generaciones futuras."
+  },
+  {
+    "grado": 3,
+    "titulo": "El Centro",
+    "texto": "El Maestro opera desde el centro del círculo, el punto inamovible de paz. Desde esa centralidad, puede observar y dirigir la periferia de los eventos de la vida diaria."
+  },
+  {
+    "grado": 3,
+    "titulo": "El Sanctum Sanctorum",
+    "texto": "El lugar santísimo del Templo de Salomón. Representa el nivel más profundo y sagrado de la mente humana, donde reside la chispa de la Divinidad."
+  },
+  {
+    "grado": 3,
+    "titulo": "El Trabajo del Maestro",
+    "texto": "Consiste en trazar planes en la Tabla de Dibujo para los Aprendices y Compañeros. Es el educador, el guía y el arquitecto de la evolución humana."
+  },
+  {
+    "grado": 3,
+    "titulo": "La Maestría",
+    "texto": "La verdadera maestría no es un título, es un estado de conciencia. Se demuestra en la serenidad frente a la crisis, en la justicia de las acciones y en el amor al prójimo."
+  },
+  {
+    "grado": 3,
+    "titulo": "La Unidad",
+    "texto": "El Maestro comprende que la separación es una ilusión. Experimenta la profunda unidad de toda vida y trabaja por la fraternidad universal sin distinciones."
+  },
+  {
+    "grado": 3,
+    "titulo": "La Palabra Sustituta",
+    "texto": "Reconoce nuestra limitación humana para expresar lo Infinito. Las palabras terrenales son solo aproximaciones, sustitutos del Logos original inefable."
+  },
+  {
+    "grado": 3,
+    "titulo": "El Deber del Maestro",
+    "texto": "Ser un faro en medio de la oscuridad. El Maestro no vive para sí mismo, sino para el beneficio y la elevación de toda la humanidad."
+  },
+  {
+    "grado": 3,
+    "titulo": "La Eternidad",
+    "texto": "El grado de Maestro nos proyecta fuera del tiempo ilusorio. Al vencer el miedo a la muerte física, se vive plenamente anclado en el presente eterno."
+  },
+  {
+    "grado": 3,
+    "titulo": "El Triángulo Trinitario",
+    "texto": "Representa a la Deidad. En la Maestría, la trinidad de Sabiduría, Fuerza y Belleza se manifiesta plenamente equilibrada en el templo individual del masón."
+  },
+  {
+    "grado": 3,
+    "titulo": "La Verdadera Luz",
+    "texto": "Ya no es la luz del Sol físico ni de las artes liberales, sino la Luz Espiritual pura que emana directamente del Gran Arquitecto del Universo."
+  },
+  {
+    "grado": 3,
+    "titulo": "El Ojo que Todo lo Ve",
+    "texto": "Símbolo de la omnisciencia divina y de nuestra propia conciencia despierta que observa sin juzgar, vigilando la pureza de todas nuestras intenciones."
+  },
+  {
+    "grado": 3,
+    "titulo": "La Perfección de la Obra",
+    "texto": "La obra masónica nunca termina en el plano físico. El Maestro comprende que el progreso es infinito y dedica su existencia inmortal a la perfección incesante."
   }
 ]

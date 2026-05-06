@@ -15,7 +15,7 @@ export default function ConfiguracionPage() {
   const [form, setForm] = useState({
     tipo_cuota_id: '',
     importe: '',
-    vigencia_desde: new Date().toISOString().split('T'),
+    vigencia_desde: new Date().toISOString().split('T')[0],
     notas: 'Actualización de cuota'
   })
 
@@ -56,7 +56,7 @@ useEffect(() => {
       setForm(f => {
         // Solo actualizamos si el form no tiene tipo_cuota_id y hay tipos disponibles
         if (!f.tipo_cuota_id && tiposConCuota.length > 0) {
-           return { ...f, tipo_cuota_id: tiposConCuota.id }
+           return { ...f, tipo_cuota_id: tiposConCuota[0].id }
         }
         return f
       })
@@ -103,7 +103,17 @@ useEffect(() => {
 
     setExito('El nuevo valor de la cuota se registró correctamente.')
     setForm(f => ({ ...f, importe: '', notas: 'Actualización de cuota' }))
-    await cargarDatos() // Actualizamos la tabla
+    
+    // Recargamos los datos para que la tabla superior se actualice al instante
+    const { data: tipos } = await supabase.from('tipos_cuota').select('*').eq('activo', true).order('nombre')
+    if (tipos) {
+      const tiposConCuota = await Promise.all(tipos.map(async (tipo) => {
+        const { data: cuota } = await supabase.from('cuotas').select('importe, vigencia_desde, notas').eq('tipo_cuota_id', tipo.id).order('vigencia_desde', { ascending: false }).limit(1).single()
+        return { ...tipo, cuotaActual: cuota }
+      }))
+      setTiposCuota(tiposConCuota)
+    }
+
     setGuardando(false)
     router.refresh()
   }
@@ -124,13 +134,13 @@ useEffect(() => {
   }
 
   return (
-    <div style={{ maxWidth: '800px' }}>
-      <div style={{ marginBottom: '1.5rem' }}>
-        <h1 style={{ fontSize: '22px', fontWeight: '500', color: '#1a1a2e', marginBottom: '4px' }}>
-          Configuración
+    <div style={{ maxWidth: '850px', fontFamily: 'var(--font-montserrat)' }}>
+      <div style={{ marginBottom: '2rem' }}>
+        <h1 style={{ fontSize: '28px', fontWeight: '600', color: 'var(--color-institucional)', marginBottom: '6px', fontFamily: 'var(--font-baskerville)' }}>
+          Configuración Financiera
         </h1>
-        <p style={{ fontSize: '13px', color: '#888' }}>
-          Administración de valores de cuotas y cápitas del taller.
+        <p style={{ fontSize: '14px', color: 'var(--color-gris)', margin: 0 }}>
+          Administración de valores vigentes para cuotas y cápitas del Taller.
         </p>
       </div>
 
@@ -139,61 +149,68 @@ useEffect(() => {
         <p style={estiloTituloSeccion}>Valores programados o vigentes</p>
         
         {cargando ? (
-          <p style={{ fontSize: '13px', color: '#888', padding: '1rem 0' }}>Cargando datos...</p>
+          <p style={{ fontSize: '14px', color: 'var(--color-gris)', padding: '1rem 0' }}>Cargando datos...</p>
         ) : (
-          <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '13px' }}>
-            <thead>
-              <tr>
-                <th style={estiloTh}>Tipo de Cuota</th>
-                <th style={estiloTh}>Importe</th>
-                <th style={estiloTh}>Vigente desde</th>
-                <th style={estiloTh}>Notas</th>
-              </tr>
-            </thead>
-            <tbody>
-              {tiposCuota.map((tipo, i) => (
-                <tr key={tipo.id} style={{ backgroundColor: i % 2 === 0 ? 'transparent' : '#fafaf8' }}>
-                  <td style={estiloTd}>
-                    <span style={{ fontWeight: '500' }}>{tipo.nombre}</span><br/>
-                    <span style={{ fontSize: '11px', color: '#888' }}>{tipo.descripcion}</span>
-                  </td>
-                  <td style={{ ...estiloTd, color: '#1a1a2e', fontWeight: '600' }}>
-                    {tipo.cuotaActual ? formatPesos(tipo.cuotaActual.importe) : '—'}
-                  </td>
-                  <td style={estiloTd}>
-                    {tipo.cuotaActual ? formatFecha(tipo.cuotaActual.vigencia_desde) : '—'}
-                  </td>
-                  <td style={{ ...estiloTd, color: '#888' }}>
-                    {tipo.cuotaActual?.notas || '—'}
-                  </td>
+          <div style={{ overflowX: 'auto' }}>
+            <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '13px' }}>
+              <thead>
+                <tr>
+                  <th style={estiloTh}>Tipo de Cuota</th>
+                  <th style={estiloTh}>Importe</th>
+                  <th style={estiloTh}>Vigente desde</th>
+                  <th style={estiloTh}>Notas</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {tiposCuota.map((tipo, i) => (
+                  <tr 
+                    key={tipo.id} 
+                    style={{ backgroundColor: i % 2 === 0 ? '#ffffff' : '#fafaf8', transition: 'background-color 0.2s' }}
+                    onMouseOver={e => e.currentTarget.style.backgroundColor = '#f4f3ed'}
+                    onMouseOut={e => e.currentTarget.style.backgroundColor = i % 2 === 0 ? '#ffffff' : '#fafaf8'}
+                  >
+                    <td style={estiloTd}>
+                      <span style={{ fontWeight: '600', color: 'var(--color-institucional)', fontSize: '14px' }}>{tipo.nombre}</span><br/>
+                      <span style={{ fontSize: '12px', color: 'var(--color-gris)' }}>{tipo.descripcion}</span>
+                    </td>
+                    <td style={{ ...estiloTd, color: '#4A8516', fontWeight: '700', fontSize: '14px' }}>
+                      {tipo.cuotaActual ? formatPesos(tipo.cuotaActual.importe) : '—'}
+                    </td>
+                    <td style={estiloTd}>
+                      {tipo.cuotaActual ? formatFecha(tipo.cuotaActual.vigencia_desde) : '—'}
+                    </td>
+                    <td style={{ ...estiloTd, color: 'var(--color-gris)' }}>
+                      {tipo.cuotaActual?.notas || '—'}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         )}
       </div>
 
       {/* Formulario de Actualización */}
-      <div style={{ ...estiloSeccion, maxWidth: '500px' }}>
+      <div style={{ ...estiloSeccion, maxWidth: '550px' }}>
         <p style={estiloTituloSeccion}>Programar nuevo valor</p>
-        <p style={{ fontSize: '12px', color: '#666', marginBottom: '1.5rem', lineHeight: '1.5' }}>
-          Al registrar un nuevo importe, no se borrará el historial anterior. El sistema de devengamiento comenzará a cobrar el nuevo valor automáticamente a partir de la fecha seleccionada.
+        <p style={{ fontSize: '13px', color: 'var(--color-gris)', marginBottom: '1.5rem', lineHeight: '1.6' }}>
+          Al registrar un nuevo importe, el historial anterior se mantendrá intacto. El sistema de devengamiento utilizará el nuevo valor automáticamente a partir de la fecha seleccionada.
         </p>
 
         {error && (
-          <div style={{ backgroundColor: '#FCEBEB', color: '#791F1F', padding: '0.75rem 1rem', borderRadius: '8px', fontSize: '13px', marginBottom: '1rem' }}>
+          <div style={{ backgroundColor: '#FCEBEB', color: '#B33A3A', padding: '1rem', borderRadius: '8px', fontSize: '13px', marginBottom: '1.5rem', border: '1px solid #F8D7D7', fontWeight: '500' }}>
             {error}
           </div>
         )}
         
         {exito && (
-          <div style={{ backgroundColor: '#EAF3DE', color: '#27500A', padding: '0.75rem 1rem', borderRadius: '8px', fontSize: '13px', marginBottom: '1rem' }}>
+          <div style={{ backgroundColor: '#EAF3DE', color: '#4A8516', padding: '1rem', borderRadius: '8px', fontSize: '13px', marginBottom: '1.5rem', border: '1px solid #D4EAB6', fontWeight: '500' }}>
             {exito}
           </div>
         )}
 
         <form onSubmit={handleSubmit}>
-          <div style={{ marginBottom: '12px' }}>
+          <div style={{ marginBottom: '16px' }}>
             <label style={estiloLabel}>Tipo de cuota *</label>
             <select
               name="tipo_cuota_id"
@@ -208,7 +225,7 @@ useEffect(() => {
             </select>
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginBottom: '12px' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', marginBottom: '16px' }}>
             <div>
               <label style={estiloLabel}>Nuevo importe *</label>
               <input
@@ -236,7 +253,7 @@ useEffect(() => {
             </div>
           </div>
 
-          <div style={{ marginBottom: '1.5rem' }}>
+          <div style={{ marginBottom: '24px' }}>
             <label style={estiloLabel}>Notas</label>
             <input
               name="notas"
@@ -252,10 +269,21 @@ useEffect(() => {
             type="submit"
             disabled={guardando || cargando}
             style={{
-              fontSize: '13px', padding: '8px 20px', borderRadius: '8px', border: 'none',
-              backgroundColor: '#1a1a2e', color: '#ffffff', cursor: (guardando || cargando) ? 'not-allowed' : 'pointer',
-              opacity: (guardando || cargando) ? 0.6 : 1, width: '100%'
+              fontSize: '14px', 
+              fontWeight: '600',
+              padding: '12px 24px', 
+              borderRadius: '8px', 
+              border: '1px solid var(--color-oro)',
+              backgroundColor: 'var(--color-institucional)', 
+              color: 'var(--color-oro)', 
+              cursor: (guardando || cargando) ? 'not-allowed' : 'pointer',
+              opacity: (guardando || cargando) ? 0.7 : 1, 
+              width: '100%',
+              transition: 'all 0.2s',
+              boxShadow: '0 4px 6px rgba(0,0,0,0.05)'
             }}
+            onMouseOver={e => !(guardando || cargando) && (e.currentTarget.style.backgroundColor = '#111122')}
+            onMouseOut={e => !(guardando || cargando) && (e.currentTarget.style.backgroundColor = 'var(--color-institucional)')}
           >
             {guardando ? 'Guardando...' : 'Confirmar nuevo valor'}
           </button>
@@ -269,51 +297,62 @@ useEffect(() => {
 
 const estiloSeccion = {
   backgroundColor: '#ffffff',
-  border: '0.5px solid #e8e6e0',
+  border: '1px solid rgba(207, 181, 59, 0.2)',
   borderRadius: '12px',
-  padding: '1.25rem',
-  marginBottom: '1.5rem'
+  padding: '1.5rem',
+  marginBottom: '2rem',
+  boxShadow: '0 2px 8px rgba(0,0,0,0.03)'
 }
 
 const estiloTituloSeccion = {
   fontSize: '13px',
-  fontWeight: '500',
-  color: '#888',
-  marginBottom: '1rem',
+  fontWeight: '700',
+  color: 'var(--color-institucional)',
+  marginBottom: '1.25rem',
   textTransform: 'uppercase',
-  letterSpacing: '0.05em'
+  letterSpacing: '0.05em',
+  borderBottom: '1px solid rgba(207, 181, 59, 0.15)',
+  paddingBottom: '10px'
 }
 
 const estiloTh = {
   textAlign: 'left',
-  padding: '8px 10px',
-  fontWeight: '500',
-  color: '#888',
-  borderBottom: '0.5px solid #e8e6e0',
-  fontSize: '12px'
+  padding: '12px 14px',
+  fontWeight: '600',
+  color: 'var(--color-gris)',
+  borderBottom: '1px solid rgba(207, 181, 59, 0.15)',
+  fontSize: '11px',
+  textTransform: 'uppercase',
+  letterSpacing: '0.05em'
 }
 
 const estiloTd = {
-  padding: '12px 10px',
-  borderBottom: '0.5px solid #f0efe9',
-  color: '#1a1a2e',
-  verticalAlign: 'middle'
+  padding: '14px',
+  borderBottom: '1px solid #f0efe9',
+  color: 'var(--color-gris)',
+  verticalAlign: 'middle',
+  fontSize: '13px'
 }
 
 const estiloLabel = {
   display: 'block',
   fontSize: '12px',
-  color: '#666',
-  marginBottom: '4px'
+  fontWeight: '600',
+  color: 'var(--color-institucional)',
+  marginBottom: '8px',
+  fontFamily: 'var(--font-montserrat)'
 }
 
 const estiloInput = {
   width: '100%',
-  padding: '8px 10px',
+  padding: '12px 14px',
   fontSize: '13px',
-  border: '0.5px solid #c8c5b8',
+  border: '1px solid #d1d0c8',
   borderRadius: '8px',
-  backgroundColor: '#fafaf8',
-  color: '#1a1a2e',
-  boxSizing: 'border-box'
+  backgroundColor: '#fff',
+  color: 'var(--color-institucional)',
+  boxSizing: 'border-box',
+  outline: 'none',
+  transition: 'border-color 0.2s',
+  fontFamily: 'var(--font-montserrat)'
 }

@@ -42,7 +42,7 @@ export default function HermanosPage() {
   }, [])
 
   if (cargando) {
-    return <p style={{ fontSize: '13px', color: '#888', padding: '2rem' }}>Cargando Cuadro Lógico...</p>
+    return <p style={{ fontSize: '14px', color: 'var(--color-gris)', padding: '2rem', fontFamily: 'var(--font-montserrat)' }}>Cargando Cuadro Lógico...</p>
   }
 
   const activos = hermanos.filter(h => h.activo && h.estado === 'activo')
@@ -53,37 +53,42 @@ export default function HermanosPage() {
   const veContacto = rol === 'Secretario' || rol === 'Venerable Maestro'
 
   return (
-    <div style={{ maxWidth: '1100px' }}>
+    <div style={{ maxWidth: '1100px', fontFamily: 'var(--font-montserrat)' }}>
       
       {/* CABECERA */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1.5rem', flexWrap: 'wrap', gap: '1rem' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '2rem', flexWrap: 'wrap', gap: '1rem' }}>
         <div>
-          <h1 style={{ fontSize: '24px', fontWeight: '600', color: '#1a1a2e', marginBottom: '4px' }}>
+          <h1 style={{ fontSize: '26px', fontWeight: '600', color: 'var(--color-institucional)', marginBottom: '6px', fontFamily: 'var(--font-baskerville)' }}>
             Cuadro Lógico
           </h1>
-          <p style={{ fontSize: '14px', color: '#888', margin: 0 }}>
-            <span style={{ color: '#3B6D11', fontWeight: '500' }}>{activos.length} activos</span> · <span style={{ color: '#A32D2D' }}>{inactivos.length} inactivos</span>
+          <p style={{ fontSize: '14px', color: 'var(--color-gris)', margin: 0 }}>
+            <span style={{ color: '#4A8516', fontWeight: '600' }}>{activos.length} activos</span> <span style={{ margin: '0 6px', color: '#ccc' }}>|</span> <span style={{ color: '#B33A3A', fontWeight: '500' }}>{inactivos.length} inactivos</span>
           </p>
         </div>
         
         {/* Botón de Nuevo Hermano con ícono */}
         {(veFinanzas || veContacto) && (
-          <Link href="/panel/tesoreria/hermanos/nuevo" style={estiloBotonPrimario}>
-            <UserPlus size={16} /> Agregar Hermano
+          <Link 
+            href="/panel/tesoreria/hermanos/nuevo" 
+            style={estiloBotonPrimario}
+            onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#111122'}
+            onMouseOut={(e) => e.currentTarget.style.backgroundColor = 'var(--color-institucional)'}
+          >
+            <UserPlus size={18} /> Agregar Hermano
           </Link>
         )}
       </div>
 
-      {/* ACTVOS */}
+      {/* ACTIVOS */}
       <div style={estiloSeccion}>
-        <p style={estiloTituloSeccion}><Activity size={16} style={{ marginRight: '6px' }} /> Hermanos Activos</p>
+        <p style={estiloTituloSeccion}><Activity size={16} style={{ marginRight: '8px', color: '#4A8516' }} /> Hermanos Activos</p>
         <TablaHermanos hermanos={activos} veFinanzas={veFinanzas} veContacto={veContacto} />
       </div>
 
       {/* INACTIVOS */}
       {inactivos.length > 0 && (
-        <div style={{ ...estiloSeccion, opacity: 0.85 }}>
-          <p style={estiloTituloSeccion}><Shield size={16} style={{ marginRight: '6px' }} /> En Sueños / Inactivos / Bajas</p>
+        <div style={{ ...estiloSeccion, opacity: 0.9 }}>
+          <p style={estiloTituloSeccion}><Shield size={16} style={{ marginRight: '8px', color: '#B33A3A' }} /> En Sueños / Inactivos / Bajas</p>
           <TablaHermanos hermanos={inactivos} veFinanzas={veFinanzas} veContacto={veContacto} />
         </div>
       )}
@@ -93,7 +98,7 @@ export default function HermanosPage() {
 
 function TablaHermanos({ hermanos, veFinanzas, veContacto }) {
   if (hermanos.length === 0) {
-    return <p style={{ fontSize: '13px', color: '#888', padding: '1rem 0', margin: 0 }}>No hay hermanos en esta categoría.</p>
+    return <p style={{ fontSize: '13px', color: 'var(--color-gris)', padding: '1.5rem', margin: 0 }}>No hay hermanos en esta categoría.</p>
   }
 
   return (
@@ -107,7 +112,7 @@ function TablaHermanos({ hermanos, veFinanzas, veContacto }) {
             {/* Columnas Secretaría */}
             {veContacto && (
               <th style={estiloTh}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}><Mail size={14} /> Contacto</div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}><Mail size={14} /> Contacto</div>
               </th>
             )}
 
@@ -115,7 +120,7 @@ function TablaHermanos({ hermanos, veFinanzas, veContacto }) {
             {veFinanzas && <th style={estiloTh}>Cuota</th>}
             {veFinanzas && (
               <th style={estiloTh}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}><CreditCard size={14} /> Saldo</div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}><CreditCard size={14} /> Saldo</div>
               </th>
             )}
             {veFinanzas && <th style={estiloTh}>Estado Fin.</th>}
@@ -125,27 +130,32 @@ function TablaHermanos({ hermanos, veFinanzas, veContacto }) {
         </thead>
         <tbody>
           {hermanos.map((h, i) => (
-            <tr key={h.id} style={{ backgroundColor: i % 2 === 0 ? '#ffffff' : '#fafaf8', transition: 'background-color 0.2s' }}>
+            <tr 
+              key={h.id} 
+              style={{ backgroundColor: i % 2 === 0 ? '#ffffff' : '#fafaf8', transition: 'background-color 0.2s' }}
+              onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#f4f3ed'}
+              onMouseOut={(e) => e.currentTarget.style.backgroundColor = i % 2 === 0 ? '#ffffff' : '#fafaf8'}
+            >
               
               <td style={estiloTd}>
-                <span style={{ fontWeight: '600', color: '#1a1a2e', fontSize: '14px' }}>{h.apellido}</span>, <span style={{ color: '#1a1a2e', fontWeight: '500' }}>{h.nombre}</span>
+                <span style={{ fontWeight: '600', color: 'var(--color-institucional)', fontSize: '14px' }}>{h.apellido}</span>, <span style={{ color: 'var(--color-institucional)', fontWeight: '500' }}>{h.nombre}</span>
               </td>
               
-              <td style={{ ...estiloTd, color: '#666' }}>{h.grado}°</td>
+              <td style={{ ...estiloTd, color: 'var(--color-gris)' }}>{h.grado}°</td>
               
               {/* Datos Secretaría */}
               {veContacto && (
-                <td style={{ ...estiloTd, fontSize: '12px', color: '#666' }}>
-                  {h.email || <span style={{ color: '#ccc' }}>Sin correo</span>}<br/>
-                  {h.telefono || <span style={{ color: '#ccc' }}>Sin teléfono</span>}
+                <td style={{ ...estiloTd, fontSize: '12px', color: 'var(--color-gris)' }}>
+                  {h.email || <span style={{ color: '#ccc', fontStyle: 'italic' }}>Sin correo</span>}<br/>
+                  {h.telefono || <span style={{ color: '#ccc', fontStyle: 'italic' }}>Sin teléfono</span>}
                 </td>
               )}
 
               {/* Datos Tesorería */}
-              {veFinanzas && <td style={{ ...estiloTd, color: '#666' }}>{h.tipos_cuota?.nombre || '—'}</td>}
+              {veFinanzas && <td style={{ ...estiloTd, color: 'var(--color-gris)' }}>{h.tipos_cuota?.nombre || '—'}</td>}
               {veFinanzas && (
                 <td style={estiloTd}>
-                  <span style={{ color: h.exento ? '#854F0B' : h.saldo >= 0 ? '#3B6D11' : '#A32D2D', fontWeight: '600' }}>
+                  <span style={{ color: h.exento ? '#854F0B' : h.saldo >= 0 ? '#4A8516' : '#B33A3A', fontWeight: '600' }}>
                     {h.exento ? 'Exento' : formatPesos(h.saldo)}
                   </span>
                 </td>
@@ -154,8 +164,19 @@ function TablaHermanos({ hermanos, veFinanzas, veContacto }) {
               
               {/* ACCIONES */}
               <td style={{ ...estiloTd, textAlign: 'right' }}>
-                <Link href={`/panel/tesoreria/hermanos/${h.id}`} style={estiloBotonAccion}>
-                  <Eye size={14} /> Abrir Ficha
+                <Link 
+                  href={`/panel/tesoreria/hermanos/${h.id}`} 
+                  style={estiloBotonAccion}
+                  onMouseOver={(e) => {
+                    e.currentTarget.style.backgroundColor = 'var(--color-institucional)'
+                    e.currentTarget.style.color = 'var(--color-oro)'
+                  }}
+                  onMouseOut={(e) => {
+                    e.currentTarget.style.backgroundColor = '#ffffff'
+                    e.currentTarget.style.color = 'var(--color-institucional)'
+                  }}
+                >
+                  <Eye size={14} /> Ficha
                 </Link>
               </td>
 
@@ -175,25 +196,25 @@ function Badge({ hermano }) {
       renunciado: 'Renuncia',
       baja: 'Baja'
     }
-    return <span style={{ ...estiloBadge, background: '#F1EFE8', color: '#666', border: '1px solid #e8e6e0' }}>
+    return <span style={{ ...estiloBadge, background: '#F1EFE8', color: 'var(--color-gris)', border: '1px solid #e8e6e0' }}>
       {labels[hermano.estado] || 'Inactivo'}
     </span>
   }
   if (hermano.exento) return <span style={{ ...estiloBadge, background: '#FAEEDA', color: '#854F0B', border: '1px solid #F3DDBA' }}>Exento</span>
-  if (hermano.saldo >= 0) return <span style={{ ...estiloBadge, background: '#EAF3DE', color: '#27500A', border: '1px solid #D4EAB6' }}>A plomo</span>
+  if (hermano.saldo >= 0) return <span style={{ ...estiloBadge, background: '#EAF3DE', color: '#4A8516', border: '1px solid #D4EAB6' }}>A plomo</span>
   
-  return <span style={{ ...estiloBadge, background: '#FCEBEB', color: '#A32D2D', border: '1px solid #F8D7D7' }}>En deuda</span>
+  return <span style={{ ...estiloBadge, background: '#FCEBEB', color: '#B33A3A', border: '1px solid #F8D7D7' }}>En deuda</span>
 }
 
 function formatPesos(monto) {
   return new Intl.NumberFormat('es-AR', { style: 'currency', currency: 'ARS', maximumFractionDigits: 0 }).format(monto)
 }
 
-// ESTILOS MEJORADOS
-const estiloSeccion = { backgroundColor: '#ffffff', border: '1px solid #e8e6e0', borderRadius: '12px', padding: '0', overflow: 'hidden', marginBottom: '1.5rem', boxShadow: '0 4px 6px rgba(0,0,0,0.02)' }
-const estiloTituloSeccion = { display: 'flex', alignItems: 'center', fontSize: '12px', fontWeight: '600', color: '#1a1a2e', textTransform: 'uppercase', letterSpacing: '0.05em', margin: 0, padding: '1.25rem', backgroundColor: '#fafaf8', borderBottom: '1px solid #e8e6e0' }
-const estiloTh = { textAlign: 'left', padding: '12px 16px', fontWeight: '600', color: '#888', borderBottom: '1px solid #e8e6e0', fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.05em', whiteSpace: 'nowrap' }
-const estiloTd = { padding: '12px 16px', borderBottom: '1px solid #f0efe9', verticalAlign: 'middle', whiteSpace: 'nowrap' }
-const estiloBadge = { display: 'inline-block', fontSize: '11px', padding: '4px 10px', borderRadius: '20px', fontWeight: '600', letterSpacing: '0.02em' }
-const estiloBotonPrimario = { display: 'flex', alignItems: 'center', gap: '8px', fontSize: '13px', fontWeight: '500', padding: '10px 18px', borderRadius: '8px', border: 'none', backgroundColor: '#1a1a2e', color: '#ffffff', textDecoration: 'none', cursor: 'pointer', transition: 'background-color 0.2s' }
-const estiloBotonAccion = { display: 'inline-flex', alignItems: 'center', gap: '6px', fontSize: '12px', fontWeight: '500', padding: '6px 12px', borderRadius: '6px', border: '1px solid #c8c5b8', backgroundColor: '#ffffff', color: '#1a1a2e', textDecoration: 'none', transition: 'all 0.2s', cursor: 'pointer' }
+// ESTILOS ADAPTADOS A UNIÓN 17
+const estiloSeccion = { backgroundColor: '#ffffff', border: '1px solid rgba(207, 181, 59, 0.2)', borderRadius: '12px', padding: '0', overflow: 'hidden', marginBottom: '2rem', boxShadow: '0 2px 8px rgba(0,0,0,0.03)' }
+const estiloTituloSeccion = { display: 'flex', alignItems: 'center', fontSize: '13px', fontWeight: '700', color: 'var(--color-institucional)', textTransform: 'uppercase', letterSpacing: '0.05em', margin: 0, padding: '1.25rem', backgroundColor: '#fafaf8', borderBottom: '1px solid rgba(207, 181, 59, 0.15)' }
+const estiloTh = { textAlign: 'left', padding: '14px 16px', fontWeight: '600', color: 'var(--color-gris)', borderBottom: '1px solid rgba(207, 181, 59, 0.15)', fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.05em', whiteSpace: 'nowrap' }
+const estiloTd = { padding: '14px 16px', borderBottom: '1px solid #f0efe9', verticalAlign: 'middle', whiteSpace: 'nowrap' }
+const estiloBadge = { display: 'inline-block', fontSize: '11px', padding: '5px 12px', borderRadius: '20px', fontWeight: '600', letterSpacing: '0.02em' }
+const estiloBotonPrimario = { display: 'flex', alignItems: 'center', gap: '8px', fontSize: '13px', fontWeight: '600', padding: '10px 20px', borderRadius: '8px', border: '1px solid var(--color-oro)', backgroundColor: 'var(--color-institucional)', color: 'var(--color-oro)', textDecoration: 'none', cursor: 'pointer', transition: 'all 0.2s', boxShadow: '0 4px 6px rgba(0,0,0,0.05)' }
+const estiloBotonAccion = { display: 'inline-flex', alignItems: 'center', gap: '6px', fontSize: '12px', fontWeight: '600', padding: '6px 14px', borderRadius: '6px', border: '1px solid rgba(207, 181, 59, 0.4)', backgroundColor: '#ffffff', color: 'var(--color-institucional)', textDecoration: 'none', transition: 'all 0.2s', cursor: 'pointer' }

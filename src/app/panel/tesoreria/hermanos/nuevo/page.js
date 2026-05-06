@@ -101,29 +101,38 @@ export default function NuevoHermanoPage() {
   }
 
   return (
-    <div style={{ maxWidth: '600px' }}>
+    <div style={{ maxWidth: '700px', fontFamily: 'var(--font-montserrat)' }}>
 
       {/* Encabezado */}
-      <Link href="/panel/tesoreria/hermanos" style={{ fontSize: '12px', color: '#666', textDecoration: 'none', marginBottom: '8px', display: 'inline-block' }}>
-        ← Volver al Cuadro Lógico
-      </Link>
+      <div style={{ marginBottom: '2rem' }}>
+        <Link 
+          href="/panel/tesoreria/hermanos" 
+          style={{ fontSize: '13px', color: 'var(--color-gris)', fontWeight: '500', textDecoration: 'none', marginBottom: '12px', display: 'inline-block', transition: 'color 0.2s' }}
+          onMouseOver={e => e.currentTarget.style.color = 'var(--color-institucional)'}
+          onMouseOut={e => e.currentTarget.style.color = 'var(--color-gris)'}
+        >
+          ← Volver al Cuadro Lógico
+        </Link>
 
-      <h1 style={{ fontSize: '22px', fontWeight: '500', color: '#1a1a2e', marginBottom: '0.25rem' }}>
-        Nuevo hermano
-      </h1>
-      <p style={{ fontSize: '13px', color: '#888', marginBottom: '1.5rem' }}>
-        Completá los datos del hermano. El saldo inicial permite cargar su situación actual con el tesoro.
-      </p>
+        <h1 style={{ fontSize: '28px', fontWeight: '600', color: 'var(--color-institucional)', marginBottom: '6px', fontFamily: 'var(--font-baskerville)' }}>
+          Nuevo Hermano
+        </h1>
+        <p style={{ fontSize: '14px', color: 'var(--color-gris)', margin: 0 }}>
+          Completá los datos del hermano. El saldo inicial permite cargar su situación actual con el tesoro.
+        </p>
+      </div>
 
       {/* Mensaje de error */}
       {error && (
         <div style={{
           backgroundColor: '#FCEBEB',
-          color: '#791F1F',
-          padding: '0.75rem 1rem',
+          color: '#B33A3A',
+          padding: '1rem',
           borderRadius: '8px',
           fontSize: '13px',
-          marginBottom: '1rem'
+          marginBottom: '1.5rem',
+          border: '1px solid #F8D7D7',
+          fontWeight: '500'
         }}>
           {error}
         </div>
@@ -133,7 +142,6 @@ export default function NuevoHermanoPage() {
 
         {/* SECCIÓN: Datos personales */}
         <Seccion titulo="Datos personales">
-
           <Fila>
             <Campo label="Nombre *">
               <input
@@ -176,12 +184,10 @@ export default function NuevoHermanoPage() {
               />
             </Campo>
           </Fila>
-
         </Seccion>
 
         {/* SECCIÓN: Datos masónicos */}
         <Seccion titulo="Datos masónicos">
-
           <Fila>
             <Campo label="Grado">
               <select name="grado" value={form.grado} onChange={handleChange} style={estiloInput}>
@@ -199,91 +205,97 @@ export default function NuevoHermanoPage() {
             </Campo>
           </Fila>
 
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '0.5rem' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginTop: '0.5rem', padding: '8px 0' }}>
             <input
               type="checkbox"
               name="activo"
               id="activo"
               checked={form.activo}
               onChange={handleChange}
-              style={{ width: '16px', height: '16px' }}
+              style={{ width: '16px', height: '16px', cursor: 'pointer' }}
             />
-            <label htmlFor="activo" style={{ fontSize: '13px', color: '#444' }}>
+            <label htmlFor="activo" style={{ fontSize: '13px', color: 'var(--color-institucional)', fontWeight: '500', cursor: 'pointer' }}>
               Hermano activo en el taller
             </label>
           </div>
-
         </Seccion>
 
         {/* SECCIÓN: Estado con el tesoro */}
         <Seccion titulo="Estado con el tesoro">
-
           <Campo label="Saldo inicial">
             <input
               name="saldo"
               type="number"
               value={form.saldo}
               onChange={handleChange}
-              style={estiloInput}
+              style={{ ...estiloInput, maxWidth: '50%' }}
             />
-            <p style={{ fontSize: '11px', color: '#888', marginTop: '4px' }}>
-              Positivo = tiene crédito a favor · Negativo = tiene deuda · 0 = a plomo
+            <p style={{ fontSize: '11px', color: 'var(--color-gris)', marginTop: '6px', fontWeight: '500' }}>
+              Positivo = tiene crédito a favor <span style={{ margin: '0 4px', color: '#d1d0c8' }}>|</span> Negativo = tiene deuda <span style={{ margin: '0 4px', color: '#d1d0c8' }}>|</span> 0 = a plomo
             </p>
           </Campo>
 
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', margin: '1rem 0 0.5rem' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px', margin: '1.5rem 0 0.5rem' }}>
             <input
               type="checkbox"
               name="exento"
               id="exento"
               checked={form.exento}
               onChange={handleChange}
-              style={{ width: '16px', height: '16px' }}
+              style={{ width: '16px', height: '16px', cursor: 'pointer' }}
             />
-            <label htmlFor="exento" style={{ fontSize: '13px', color: '#444' }}>
+            <label htmlFor="exento" style={{ fontSize: '13px', color: 'var(--color-institucional)', fontWeight: '500', cursor: 'pointer' }}>
               Hermano exento de capita temporalmente
             </label>
           </div>
 
           {form.exento && (
-            <Fila>
-              <Campo label="Exento hasta">
-                <input
-                  name="exento_hasta"
-                  type="date"
-                  value={form.exento_hasta}
-                  onChange={handleChange}
-                  style={estiloInput}
-                />
-              </Campo>
-              <Campo label="Motivo de la exención">
-                <input
-                  name="exento_motivo"
-                  value={form.exento_motivo}
-                  onChange={handleChange}
-                  placeholder="Ej: Situación económica transitoria"
-                  style={estiloInput}
-                />
-              </Campo>
-            </Fila>
+            <div style={{ backgroundColor: '#fafaf8', padding: '1rem', borderRadius: '8px', border: '1px solid #e8e6e0', marginTop: '1rem' }}>
+              <Fila>
+                <Campo label="Exento hasta">
+                  <input
+                    name="exento_hasta"
+                    type="date"
+                    value={form.exento_hasta}
+                    onChange={handleChange}
+                    style={estiloInput}
+                  />
+                </Campo>
+                <Campo label="Motivo de la exención">
+                  <input
+                    name="exento_motivo"
+                    value={form.exento_motivo}
+                    onChange={handleChange}
+                    placeholder="Ej: Situación económica transitoria"
+                    style={estiloInput}
+                  />
+                </Campo>
+              </Fila>
+            </div>
           )}
-
         </Seccion>
 
         {/* Botones */}
-        <div style={{ display: 'flex', gap: '8px', marginTop: '1.5rem' }}>
+        <div style={{ display: 'flex', gap: '12px', marginTop: '2rem' }}>
           <button
             type="submit"
             disabled={cargando}
             style={{
               ...estiloBotonPrimario,
-              opacity: cargando ? 0.6 : 1,
+              opacity: cargando ? 0.7 : 1,
               cursor: cargando ? 'not-allowed' : 'pointer'
             }}
+            onMouseOver={e => !cargando && (e.currentTarget.style.backgroundColor = '#111122')}
+            onMouseOut={e => !cargando && (e.currentTarget.style.backgroundColor = 'var(--color-institucional)')}
           >
             {cargando ? 'Guardando...' : 'Guardar hermano'}
           </button>
-          <Link href="/panel/tesoreria/hermanos" style={estiloBoton}>
+          <Link 
+            href="/panel/tesoreria/hermanos" 
+            style={estiloBotonSecundario}
+            onMouseOver={e => e.currentTarget.style.backgroundColor = '#f0efe9'}
+            onMouseOut={e => e.currentTarget.style.backgroundColor = '#fafaf8'}
+          >
             Cancelar
           </Link>
         </div>
@@ -299,12 +311,13 @@ function Seccion({ titulo, children }) {
   return (
     <div style={{
       backgroundColor: '#ffffff',
-      border: '0.5px solid #e8e6e0',
+      border: '1px solid rgba(207, 181, 59, 0.2)',
       borderRadius: '12px',
-      padding: '1.25rem',
-      marginBottom: '1rem'
+      padding: '1.5rem',
+      marginBottom: '1.5rem',
+      boxShadow: '0 2px 8px rgba(0,0,0,0.03)'
     }}>
-      <p style={{ fontSize: '13px', fontWeight: '500', color: '#888', marginBottom: '1rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+      <p style={{ fontSize: '12px', fontWeight: '700', color: 'var(--color-institucional)', marginBottom: '1.25rem', textTransform: 'uppercase', letterSpacing: '0.05em', borderBottom: '1px solid rgba(207, 181, 59, 0.15)', paddingBottom: '10px' }}>
         {titulo}
       </p>
       {children}
@@ -314,7 +327,7 @@ function Seccion({ titulo, children }) {
 
 function Fila({ children }) {
   return (
-    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginBottom: '12px' }}>
+    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '16px', marginBottom: '16px' }}>
       {children}
     </div>
   )
@@ -323,7 +336,7 @@ function Fila({ children }) {
 function Campo({ label, children }) {
   return (
     <div>
-      <label style={{ display: 'block', fontSize: '12px', color: '#666', marginBottom: '4px' }}>
+      <label style={{ display: 'block', fontSize: '12px', fontWeight: '600', color: 'var(--color-institucional)', marginBottom: '8px', fontFamily: 'var(--font-montserrat)' }}>
         {label}
       </label>
       {children}
@@ -335,34 +348,43 @@ function Campo({ label, children }) {
 
 const estiloInput = {
   width: '100%',
-  padding: '8px 10px',
+  padding: '10px 12px',
   fontSize: '13px',
-  border: '0.5px solid #c8c5b8',
+  border: '1px solid #d1d0c8',
   borderRadius: '8px',
-  backgroundColor: '#fafaf8',
-  color: '#1a1a2e',
-  boxSizing: 'border-box'
+  backgroundColor: '#fff',
+  color: 'var(--color-institucional)',
+  boxSizing: 'border-box',
+  outline: 'none',
+  transition: 'border-color 0.2s',
+  fontFamily: 'var(--font-montserrat)'
 }
 
 const estiloBotonPrimario = {
-  fontSize: '13px',
-  padding: '8px 20px',
+  fontSize: '14px',
+  fontWeight: '600',
+  padding: '12px 24px',
   borderRadius: '8px',
-  border: 'none',
-  backgroundColor: '#1a1a2e',
-  color: '#ffffff',
+  border: '1px solid var(--color-oro)',
+  backgroundColor: 'var(--color-institucional)',
+  color: 'var(--color-oro)',
   textDecoration: 'none',
-  cursor: 'pointer'
+  transition: 'all 0.2s',
+  boxShadow: '0 4px 6px rgba(0,0,0,0.05)'
 }
 
-const estiloBoton = {
-  fontSize: '13px',
-  padding: '8px 20px',
+const estiloBotonSecundario = {
+  fontSize: '14px',
+  fontWeight: '600',
+  padding: '12px 24px',
   borderRadius: '8px',
-  border: '0.5px solid #c8c5b8',
-  backgroundColor: 'transparent',
-  color: '#1a1a2e',
+  border: '1px solid #d1d0c8',
+  backgroundColor: '#fafaf8',
+  color: 'var(--color-gris)',
   textDecoration: 'none',
   cursor: 'pointer',
-  display: 'inline-block'
+  display: 'inline-flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  transition: 'background-color 0.2s'
 }

@@ -61,34 +61,41 @@ export default function NuevoIngresoPage() {
       return
     }
 
-    router.push('panel/tesoreria/ingresos')
+    router.push('/panel/tesoreria/ingresos') // Corregido: agregado el slash inicial
     router.refresh()
   }
 
-  const estilosCategoriaActiva = {
-    'Intereses': { backgroundColor: '#EAF3DE', borderColor: '#3B6D11', color: '#27500A' },
-    'Donación': { backgroundColor: '#E6F1FB', borderColor: '#185FA5', color: '#0C447C' },
-    'Otros': { backgroundColor: '#F1EFE8', borderColor: '#5F5E5A', color: '#444441' },
-  }
-
   return (
-    <div style={{ maxWidth: '560px' }}>
+    <div style={{ maxWidth: '600px', fontFamily: 'var(--font-montserrat)' }}>
 
-      <div style={{ marginBottom: '1.5rem' }}>
-        <Link href="/panel/tesoreria/ingresos" style={{ fontSize: '12px', color: '#666', textDecoration: 'none', marginBottom: '8px', display: 'inline-block' }}>
+      <div style={{ marginBottom: '2rem' }}>
+        <Link 
+          href="/panel/tesoreria/ingresos" 
+          style={{ fontSize: '13px', color: 'var(--color-gris)', fontWeight: '500', textDecoration: 'none', marginBottom: '12px', display: 'inline-block', transition: 'color 0.2s' }}
+          onMouseOver={e => e.currentTarget.style.color = 'var(--color-institucional)'}
+          onMouseOut={e => e.currentTarget.style.color = 'var(--color-gris)'}
+        >
           ← Volver a Ingresos
         </Link>
+        <h1 style={{ fontSize: '28px', fontWeight: '600', color: 'var(--color-institucional)', marginBottom: '6px', fontFamily: 'var(--font-baskerville)' }}>
+          Registrar Ingreso
+        </h1>
+        <p style={{ fontSize: '14px', color: 'var(--color-gris)', margin: 0 }}>
+          Asentá un ingreso que no corresponde a cuotas (intereses, donaciones, etc.).
+        </p>
       </div>
 
-      <h1 style={{ fontSize: '22px', fontWeight: '500', color: '#1a1a2e', marginBottom: '0.25rem' }}>
-        Registrar ingreso
-      </h1>
-      <p style={{ fontSize: '13px', color: '#888', marginBottom: '1.5rem' }}>
-        Registrá un ingreso que no corresponde a cuotas — intereses, donaciones u otros.
-      </p>
-
       {error && (
-        <div style={{ backgroundColor: '#FCEBEB', color: '#791F1F', padding: '0.75rem 1rem', borderRadius: '8px', fontSize: '13px', marginBottom: '1rem' }}>
+        <div style={{
+          backgroundColor: '#FCEBEB',
+          color: '#B33A3A',
+          padding: '1rem',
+          borderRadius: '8px',
+          fontSize: '13px',
+          marginBottom: '1.5rem',
+          border: '1px solid #F8D7D7',
+          fontWeight: '500'
+        }}>
           {error}
         </div>
       )}
@@ -98,47 +105,53 @@ export default function NuevoIngresoPage() {
           <p style={estiloTituloSeccion}>Detalle del ingreso</p>
 
           {/* Categoría */}
-          <div style={{ marginBottom: '12px' }}>
+          <div style={{ marginBottom: '20px' }}>
             <label style={estiloLabel}>Categoría</label>
-            <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
-              {CATEGORIAS.map(cat => (
-                <button
-                  key={cat}
-                  type="button"
-                  onClick={() => setForm(f => ({ ...f, categoria: cat }))}
-                  style={{
-                    padding: '6px 16px',
-                    borderRadius: '20px',
-                    fontSize: '13px',
-                    cursor: 'pointer',
-                    border: '0.5px solid',
-                    transition: 'all 0.15s',
-                    ...(form.categoria === cat
-                      ? estilosCategoriaActiva[cat]
-                      : { backgroundColor: 'transparent', borderColor: '#c8c5b8', color: '#666' }
-                    )
-                  }}
-                >
-                  {cat}
-                </button>
-              ))}
+            <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
+              {CATEGORIAS.map(cat => {
+                const isActive = form.categoria === cat;
+                return (
+                  <button
+                    key={cat}
+                    type="button"
+                    onClick={() => setForm(f => ({ ...f, categoria: cat }))}
+                    style={{
+                      padding: '8px 18px',
+                      borderRadius: '20px',
+                      fontSize: '13px',
+                      fontWeight: '600',
+                      cursor: 'pointer',
+                      border: '1px solid',
+                      transition: 'all 0.2s',
+                      ...(isActive
+                        ? { backgroundColor: 'var(--color-institucional)', borderColor: 'var(--color-oro)', color: 'var(--color-oro)', boxShadow: '0 2px 4px rgba(0,0,0,0.1)' }
+                        : { backgroundColor: '#fafaf8', borderColor: '#d1d0c8', color: 'var(--color-gris)' }
+                      )
+                    }}
+                    onMouseOver={e => !isActive && (e.currentTarget.style.backgroundColor = '#f0efe9')}
+                    onMouseOut={e => !isActive && (e.currentTarget.style.backgroundColor = '#fafaf8')}
+                  >
+                    {cat}
+                  </button>
+                )
+              })}
             </div>
           </div>
 
           {/* Descripción */}
-          <div style={{ marginBottom: '12px' }}>
+          <div style={{ marginBottom: '16px' }}>
             <label style={estiloLabel}>Descripción *</label>
             <input
               name="descripcion"
               value={form.descripcion}
               onChange={handleChange}
-              placeholder="Ej: Intereses cuenta corriente marzo 2025"
+              placeholder="Ej: Intereses plazo fijo marzo 2026"
               style={estiloInput}
             />
           </div>
 
           {/* Monto y fecha */}
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginBottom: '12px' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', marginBottom: '16px' }}>
             <div>
               <label style={estiloLabel}>Monto *</label>
               <input
@@ -179,23 +192,43 @@ export default function NuevoIngresoPage() {
 
         {/* Vista previa */}
         {form.monto && parseFloat(form.monto) > 0 && (
-          <div style={{ backgroundColor: '#EAF3DE', borderRadius: '8px', padding: '0.75rem 1rem', marginBottom: '1rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <span style={{ fontSize: '13px', color: '#27500A' }}>Total a registrar como ingreso</span>
-            <span style={{ fontSize: '18px', fontWeight: '500', color: '#27500A' }}>
+          <div style={{ 
+            backgroundColor: '#EAF3DE', 
+            borderRadius: '8px', 
+            padding: '1rem 1.25rem', 
+            marginBottom: '1.5rem', 
+            border: '1px solid #D4EAB6',
+            display: 'flex', 
+            justifyContent: 'space-between', 
+            alignItems: 'center' 
+          }}>
+            <span style={{ fontSize: '13px', color: '#4A8516', fontWeight: '600' }}>Total a registrar como ingreso</span>
+            <span style={{ fontSize: '20px', fontWeight: '700', color: '#4A8516', fontFamily: 'var(--font-montserrat)' }}>
               +{new Intl.NumberFormat('es-AR', { style: 'currency', currency: 'ARS', maximumFractionDigits: 0 }).format(parseFloat(form.monto))}
             </span>
           </div>
         )}
 
-        <div style={{ display: 'flex', gap: '8px' }}>
+        <div style={{ display: 'flex', gap: '12px', marginTop: '1rem' }}>
           <button
             type="submit"
             disabled={cargando}
-            style={{ fontSize: '13px', padding: '8px 20px', borderRadius: '8px', border: 'none', backgroundColor: '#1a1a2e', color: '#ffffff', cursor: cargando ? 'not-allowed' : 'pointer', opacity: cargando ? 0.6 : 1 }}
+            style={{
+              ...estiloBotonPrimario,
+              opacity: cargando ? 0.7 : 1,
+              cursor: cargando ? 'not-allowed' : 'pointer'
+            }}
+            onMouseOver={e => !cargando && (e.currentTarget.style.backgroundColor = '#111122')}
+            onMouseOut={e => !cargando && (e.currentTarget.style.backgroundColor = 'var(--color-institucional)')}
           >
-            {cargando ? 'Guardando...' : 'Guardar ingreso'}
+            {cargando ? 'Guardando...' : 'Confirmar ingreso'}
           </button>
-          <Link href="/panel/tesoreria/egresos" style={{ fontSize: '13px', padding: '8px 20px', borderRadius: '8px', border: '0.5px solid #c8c5b8', backgroundColor: 'transparent', color: '#1a1a2e', textDecoration: 'none', display: 'inline-block' }}>
+          <Link 
+            href="/panel/tesoreria/ingresos" // Corregido: antes apuntaba a egresos
+            style={estiloBotonSecundario}
+            onMouseOver={e => e.currentTarget.style.backgroundColor = '#f0efe9'}
+            onMouseOut={e => e.currentTarget.style.backgroundColor = '#fafaf8'}
+          >
             Cancelar
           </Link>
         </div>
@@ -204,7 +237,76 @@ export default function NuevoIngresoPage() {
   )
 }
 
-const estiloSeccion = { backgroundColor: '#ffffff', border: '0.5px solid #e8e6e0', borderRadius: '12px', padding: '1.25rem', marginBottom: '1rem' }
-const estiloTituloSeccion = { fontSize: '13px', fontWeight: '500', color: '#888', marginBottom: '1rem', textTransform: 'uppercase', letterSpacing: '0.05em' }
-const estiloLabel = { display: 'block', fontSize: '12px', color: '#666', marginBottom: '4px' }
-const estiloInput = { width: '100%', padding: '8px 10px', fontSize: '13px', border: '0.5px solid #c8c5b8', borderRadius: '8px', backgroundColor: '#fafaf8', color: '#1a1a2e', boxSizing: 'border-box' }
+// ─── Estilos ──────────────────────────────────────────────────
+
+const estiloSeccion = {
+  backgroundColor: '#ffffff',
+  border: '1px solid rgba(207, 181, 59, 0.2)',
+  borderRadius: '12px',
+  padding: '1.5rem',
+  marginBottom: '1.5rem',
+  boxShadow: '0 2px 8px rgba(0,0,0,0.03)'
+}
+
+const estiloTituloSeccion = {
+  fontSize: '12px',
+  fontWeight: '700',
+  color: 'var(--color-institucional)',
+  marginBottom: '1.25rem',
+  textTransform: 'uppercase',
+  letterSpacing: '0.05em',
+  borderBottom: '1px solid rgba(207, 181, 59, 0.15)',
+  paddingBottom: '10px'
+}
+
+const estiloLabel = {
+  display: 'block',
+  fontSize: '12px',
+  fontWeight: '600',
+  color: 'var(--color-institucional)',
+  marginBottom: '8px',
+  fontFamily: 'var(--font-montserrat)'
+}
+
+const estiloInput = {
+  width: '100%',
+  padding: '12px 14px',
+  fontSize: '13px',
+  border: '1px solid #d1d0c8',
+  borderRadius: '8px',
+  backgroundColor: '#fff',
+  color: 'var(--color-institucional)',
+  boxSizing: 'border-box',
+  outline: 'none',
+  transition: 'border-color 0.2s',
+  fontFamily: 'var(--font-montserrat)'
+}
+
+const estiloBotonPrimario = {
+  fontSize: '14px',
+  fontWeight: '600',
+  padding: '12px 24px',
+  borderRadius: '8px',
+  border: '1px solid var(--color-oro)',
+  backgroundColor: 'var(--color-institucional)',
+  color: 'var(--color-oro)',
+  textDecoration: 'none',
+  transition: 'all 0.2s',
+  boxShadow: '0 4px 6px rgba(0,0,0,0.05)'
+}
+
+const estiloBotonSecundario = {
+  fontSize: '14px',
+  fontWeight: '600',
+  padding: '12px 24px',
+  borderRadius: '8px',
+  border: '1px solid #d1d0c8',
+  backgroundColor: '#fafaf8',
+  color: 'var(--color-gris)',
+  textDecoration: 'none',
+  cursor: 'pointer',
+  display: 'inline-flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  transition: 'background-color 0.2s'
+}
