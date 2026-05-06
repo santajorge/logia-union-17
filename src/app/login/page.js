@@ -49,7 +49,7 @@ export default function Login() {
 
       <div style={{ marginBottom: '2rem', textAlign: 'center' }}>
         <Image
-          src="logo-union.png"
+          src="logo-union-17-blanco.png"
           alt="Logo Logia Unión N° 17"
           width={130}
           height={130}
