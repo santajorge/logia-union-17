@@ -39,7 +39,7 @@ export default function Login() {
   }
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '100vh', backgroundColor: '#1C1C1C', fontFamily: "'Montserrat', sans-serif" }}>
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '100vh', backgroundColor: '#000000', fontFamily: "'Montserrat', sans-serif" }}>
       
       <div style={{ width: '100%', maxWidth: '360px', marginBottom: '1rem' }}>
         <Link href="/" style={{ fontSize: '12px', color: '#9e9b8e', textDecoration: 'none' }}>
@@ -49,8 +49,8 @@ export default function Login() {
 
       <div style={{ marginBottom: '2rem', textAlign: 'center' }}>
         <Image
-          src="logo-sanitas.png"
-          alt="Logo Logia Sanitas Sanitatum"
+          src="logo-union.png"
+          alt="Logo Logia Unión N° 17"
           width={130}
           height={130}
           style={{ objectFit: 'contain', marginBottom: '1rem', display: 'block', margin: '0 auto' }}
@@ -59,14 +59,14 @@ export default function Login() {
           A L.·.G.·.D.·.G.·.A.·.D.·.U.·.
         </p>
         <p style={{ fontSize: '14px', color: '#F5F5F5', fontWeight: '500', margin: 0 }}>
-          Logia Sanitas Sanitatum N°763
+          Aug.·. y Resp.·. Logia Unión N°17
         </p>
         <p style={{ fontSize: '11px', color: '#9e9b8e', margin: '4px 0 0' }}>
           Área reservada
         </p>
       </div>
 
-      <div style={{ backgroundColor: '#2a2a2a', padding: '2.5rem', borderRadius: '12px', width: '100%', maxWidth: '360px', border: '1px solid #CDA434' }}>
+      <div style={{ backgroundColor: '#214D77', padding: '2.5rem', borderRadius: '12px', width: '100%', maxWidth: '360px', border: '1px solid #CDA434' }}>
         <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
           
           {error && (
@@ -82,7 +82,7 @@ export default function Login() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="tu@correo.com"
-              style={{ width: '100%', padding: '10px 12px', borderRadius: '6px', border: '1px solid #555', backgroundColor: '#1C1C1C', color: '#F5F5F5', fontSize: '14px', outline: 'none', boxSizing: 'border-box' }}
+              style={{ width: '100%', padding: '10px 12px', borderRadius: '6px', border: '1px solid #555', backgroundColor: '#AAA8B1', color: '#F5F5F5', fontSize: '14px', outline: 'none', boxSizing: 'border-box' }}
               required
             />
           </div>
@@ -94,7 +94,7 @@ export default function Login() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="••••••••"
-              style={{ width: '100%', padding: '10px 12px', borderRadius: '6px', border: '1px solid #555', backgroundColor: '#1C1C1C', color: '#F5F5F5', fontSize: '14px', outline: 'none', boxSizing: 'border-box' }}
+              style={{ width: '100%', padding: '10px 12px', borderRadius: '6px', border: '1px solid #555', backgroundColor: '#AAA8B1', color: '#F5F5F5', fontSize: '14px', outline: 'none', boxSizing: 'border-box' }}
               required
             />
           </div>
@@ -102,7 +102,7 @@ export default function Login() {
           <button
             type="submit"
             disabled={cargando}
-            style={{ marginTop: '0.5rem', backgroundColor: '#CDA434', color: '#1C1C1C', padding: '12px', borderRadius: '6px', border: 'none', fontSize: '14px', fontWeight: '600', cursor: cargando ? 'not-allowed' : 'pointer', transition: 'background-color 0.2s', opacity: cargando ? 0.7 : 1 }}
+            style={{ marginTop: '0.5rem', backgroundColor: '#CFB53B', color: '#1C1C1C', padding: '12px', borderRadius: '6px', border: 'none', fontSize: '14px', fontWeight: '600', cursor: cargando ? 'not-allowed' : 'pointer', transition: 'background-color 0.2s', opacity: cargando ? 0.7 : 1 }}
           >
             {cargando ? 'Autenticando...' : 'Ingresar al Templo'}
           </button>
