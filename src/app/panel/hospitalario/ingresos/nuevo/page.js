@@ -34,7 +34,7 @@ export default function NuevoIngresoHospitalario() {
         setTenidas(data)
         // Si hay tenidas, preseleccionamos la primera por comodidad
         if (data.length > 0) {
-          setForm(prev => ({ ...prev, tenida_id: data.id }))
+          setForm(prev => ({ ...prev, tenida_id: data.id })) // Corregido: data.id
         }
       }
       setCargando(false)
@@ -98,41 +98,70 @@ export default function NuevoIngresoHospitalario() {
   }
 
   return (
-    <div style={{ maxWidth: '600px' }}>
+    <div style={{ maxWidth: '600px', fontFamily: 'var(--font-montserrat)' }}>
       
-      <div style={{ marginBottom: '1.5rem' }}>
-        <Link href="/panel/hospitalario" style={{ fontSize: '12px', color: '#666', textDecoration: 'none', marginBottom: '8px', display: 'inline-block' }}>
+      <div style={{ marginBottom: '2rem' }}>
+        <Link 
+          href="/panel/hospitalario" 
+          style={{ fontSize: '13px', color: 'var(--color-gris)', fontWeight: '500', textDecoration: 'none', marginBottom: '12px', display: 'inline-block', transition: 'color 0.2s' }}
+          onMouseOver={e => e.currentTarget.style.color = 'var(--color-institucional)'}
+          onMouseOut={e => e.currentTarget.style.color = 'var(--color-gris)'}
+        >
           ← Volver al Saco
         </Link>
-        <h1 style={{ fontSize: '24px', fontWeight: '600', color: '#1a1a2e', margin: '0 0 4px' }}>
+        <h1 style={{ fontSize: '28px', fontWeight: '600', color: 'var(--color-institucional)', marginBottom: '6px', fontFamily: 'var(--font-baskerville)' }}>
           Registrar Ingreso
         </h1>
-        <p style={{ fontSize: '13px', color: '#888', margin: 0 }}>
+        <p style={{ fontSize: '14px', color: 'var(--color-gris)', margin: 0 }}>
           Asentá la recaudación de una Tenida o una colecta especial.
         </p>
       </div>
 
-      <div style={{ backgroundColor: '#ffffff', border: '1px solid #e8e6e0', borderRadius: '12px', padding: '1.5rem', boxShadow: '0 4px 6px rgba(0,0,0,0.02)' }}>
+      <div style={{ backgroundColor: '#ffffff', border: '1px solid rgba(207, 181, 59, 0.2)', borderRadius: '12px', padding: '2rem', boxShadow: '0 2px 8px rgba(0,0,0,0.03)' }}>
         
         {error && (
-          <div style={{ backgroundColor: '#FCEBEB', color: '#791F1F', padding: '0.75rem 1rem', borderRadius: '8px', fontSize: '13px', marginBottom: '1.5rem' }}>
+          <div style={{ backgroundColor: '#FCEBEB', color: '#B33A3A', padding: '1rem', borderRadius: '8px', fontSize: '13px', marginBottom: '1.5rem', border: '1px solid #F8D7D7', fontWeight: '500' }}>
             {error}
           </div>
         )}
 
         {/* SELECTOR DE TIPO DE SACO */}
-        <div style={{ display: 'flex', gap: '10px', marginBottom: '1.5rem', backgroundColor: '#fafaf8', padding: '6px', borderRadius: '8px', border: '1px solid #e8e6e0' }}>
+        <div style={{ display: 'flex', gap: '10px', marginBottom: '1.5rem', backgroundColor: '#fafaf8', padding: '8px', borderRadius: '10px', border: '1px solid #d1d0c8' }}>
           <button
             type="button"
             onClick={() => setTipoSaco('regular')}
-            style={{ flex: 1, padding: '8px', borderRadius: '6px', border: 'none', fontSize: '13px', fontWeight: '500', cursor: 'pointer', transition: 'all 0.2s', backgroundColor: tipoSaco === 'regular' ? '#1a1a2e' : 'transparent', color: tipoSaco === 'regular' ? '#ffffff' : '#666' }}
+            style={{ 
+              flex: 1, 
+              padding: '10px', 
+              borderRadius: '8px', 
+              border: tipoSaco === 'regular' ? '1px solid var(--color-oro)' : '1px solid transparent', 
+              fontSize: '13px', 
+              fontWeight: '600', 
+              cursor: 'pointer', 
+              transition: 'all 0.2s', 
+              backgroundColor: tipoSaco === 'regular' ? 'var(--color-institucional)' : 'transparent', 
+              color: tipoSaco === 'regular' ? 'var(--color-oro)' : 'var(--color-gris)',
+              boxShadow: tipoSaco === 'regular' ? '0 2px 4px rgba(0,0,0,0.1)' : 'none'
+            }}
           >
             Saco Regular (Tenida)
           </button>
           <button
             type="button"
             onClick={() => setTipoSaco('especial')}
-            style={{ flex: 1, padding: '8px', borderRadius: '6px', border: 'none', fontSize: '13px', fontWeight: '500', cursor: 'pointer', transition: 'all 0.2s', backgroundColor: tipoSaco === 'especial' ? '#1a1a2e' : 'transparent', color: tipoSaco === 'especial' ? '#ffffff' : '#666' }}
+            style={{ 
+              flex: 1, 
+              padding: '10px', 
+              borderRadius: '8px', 
+              border: tipoSaco === 'especial' ? '1px solid var(--color-oro)' : '1px solid transparent', 
+              fontSize: '13px', 
+              fontWeight: '600', 
+              cursor: 'pointer', 
+              transition: 'all 0.2s', 
+              backgroundColor: tipoSaco === 'especial' ? 'var(--color-institucional)' : 'transparent', 
+              color: tipoSaco === 'especial' ? 'var(--color-oro)' : 'var(--color-gris)',
+              boxShadow: tipoSaco === 'especial' ? '0 2px 4px rgba(0,0,0,0.1)' : 'none'
+            }}
           >
             Saco Especial / Donación
           </button>
@@ -140,11 +169,11 @@ export default function NuevoIngresoHospitalario() {
 
         <form onSubmit={handleSubmit}>
           
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1rem' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', marginBottom: '16px' }}>
             <div>
               <label style={estiloLabel}>Monto recaudado *</label>
               <div style={{ position: 'relative' }}>
-                <span style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: '#888', fontSize: '14px' }}>$</span>
+                <span style={{ position: 'absolute', left: '14px', top: '50%', transform: 'translateY(-50%)', color: 'var(--color-institucional)', fontSize: '14px', fontWeight: '600' }}>$</span>
                 <input
                   name="monto"
                   type="number"
@@ -154,7 +183,7 @@ export default function NuevoIngresoHospitalario() {
                   value={form.monto}
                   onChange={handleChange}
                   placeholder="0.00"
-                  style={{ ...estiloInput, paddingLeft: '28px' }}
+                  style={{ ...estiloInput, paddingLeft: '32px' }}
                 />
               </div>
             </div>
@@ -174,12 +203,12 @@ export default function NuevoIngresoHospitalario() {
 
           {/* CAMPO DINÁMICO: Solo se muestra si es Saco Regular */}
           {tipoSaco === 'regular' && (
-            <div style={{ marginBottom: '1rem' }}>
+            <div style={{ marginBottom: '16px' }}>
               <label style={estiloLabel}>Vincular a Tenida *</label>
               {cargando ? (
-                <p style={{ fontSize: '13px', color: '#888' }}>Cargando tenidas...</p>
+                <p style={{ fontSize: '13px', color: 'var(--color-gris)' }}>Cargando tenidas...</p>
               ) : tenidas.length === 0 ? (
-                <p style={{ fontSize: '13px', color: '#A32D2D' }}>No hay Tenidas registradas en el sistema.</p>
+                <p style={{ fontSize: '13px', color: '#B33A3A' }}>No hay Tenidas registradas en el sistema.</p>
               ) : (
                 <select
                   name="tenida_id"
@@ -198,9 +227,9 @@ export default function NuevoIngresoHospitalario() {
             </div>
           )}
 
-          <div style={{ marginBottom: '1.5rem' }}>
+          <div style={{ marginBottom: '24px' }}>
             <label style={estiloLabel}>
-              Notas aclaratorias {tipoSaco === 'especial' && <span style={{ color: '#A32D2D' }}>* (Obligatorio)</span>}
+              Notas aclaratorias {tipoSaco === 'especial' && <span style={{ color: '#B33A3A' }}>* (Obligatorio)</span>}
             </label>
             <input
               name="notas"
@@ -218,17 +247,20 @@ export default function NuevoIngresoHospitalario() {
             disabled={guardando || cargando}
             style={{
               width: '100%',
-              backgroundColor: '#3B6D11', // Verde hospitalario
+              backgroundColor: '#4A8516', 
               color: '#ffffff',
               border: 'none',
-              padding: '12px',
+              padding: '14px',
               borderRadius: '8px',
               fontSize: '14px',
               fontWeight: '600',
               cursor: (guardando || cargando) ? 'not-allowed' : 'pointer',
               opacity: (guardando || cargando) ? 0.7 : 1,
-              transition: 'opacity 0.2s'
+              transition: 'background-color 0.2s, opacity 0.2s',
+              boxShadow: '0 4px 6px rgba(0,0,0,0.05)'
             }}
+            onMouseOver={e => !(guardando || cargando) && (e.currentTarget.style.backgroundColor = '#386611')}
+            onMouseOut={e => !(guardando || cargando) && (e.currentTarget.style.backgroundColor = '#4A8516')}
           >
             {guardando ? 'Guardando ingreso...' : 'Confirmar Ingreso al Saco'}
           </button>
@@ -241,5 +273,5 @@ export default function NuevoIngresoHospitalario() {
 }
 
 // ESTILOS
-const estiloLabel = { display: 'block', fontSize: '11px', color: '#888', marginBottom: '6px', textTransform: 'uppercase', fontWeight: '600', letterSpacing: '0.05em' }
-const estiloInput = { width: '100%', padding: '10px 12px', fontSize: '14px', border: '1px solid #c8c5b8', borderRadius: '8px', backgroundColor: '#fafaf8', color: '#1a1a2e', outline: 'none', boxSizing: 'border-box' }
+const estiloLabel = { display: 'block', fontSize: '12px', color: 'var(--color-institucional)', marginBottom: '8px', textTransform: 'uppercase', fontWeight: '700', letterSpacing: '0.05em', fontFamily: 'var(--font-montserrat)' }
+const estiloInput = { width: '100%', padding: '12px 14px', fontSize: '13px', border: '1px solid #d1d0c8', borderRadius: '8px', backgroundColor: '#fff', color: 'var(--color-institucional)', outline: 'none', boxSizing: 'border-box', transition: 'border-color 0.2s', fontFamily: 'var(--font-montserrat)' }

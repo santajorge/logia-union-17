@@ -39,62 +39,75 @@ export default function Login() {
   }
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '100vh', backgroundColor: '#1C1C1C', fontFamily: "'Montserrat', sans-serif" }}>
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '100vh', backgroundColor: 'var(--color-institucional)', fontFamily: 'var(--font-montserrat)', padding: '1rem' }}>
       
-      <div style={{ width: '100%', maxWidth: '360px', marginBottom: '1rem' }}>
-        <Link href="/" style={{ fontSize: '12px', color: '#9e9b8e', textDecoration: 'none' }}>
+      <div style={{ width: '100%', maxWidth: '380px', marginBottom: '1.5rem' }}>
+        <Link 
+          href="/" 
+          style={{ fontSize: '13px', color: 'var(--color-oro)', textDecoration: 'none', fontWeight: '500', transition: 'opacity 0.2s' }}
+          onMouseOver={e => e.currentTarget.style.opacity = '0.8'}
+          onMouseOut={e => e.currentTarget.style.opacity = '1'}
+        >
           ← Volver a la web pública
         </Link>
       </div>
 
-      <div style={{ marginBottom: '2rem', textAlign: 'center' }}>
+      <div style={{ marginBottom: '2.5rem', textAlign: 'center' }}>
         <Image
-          src="logo-sanitas.png"
-          alt="Logo Logia Sanitas Sanitatum"
-          width={130}
-          height={130}
-          style={{ objectFit: 'contain', marginBottom: '1rem', display: 'block', margin: '0 auto' }}
+          src="/logo-union-17-blanco.png" // Asegurate de que este archivo exista en tu carpeta /public
+          alt="Escudo Logia Unión N° 17"
+          width={140}
+          height={140}
+          style={{ objectFit: 'contain', marginBottom: '1.5rem', display: 'block', margin: '0 auto' }}
         />
-        <p style={{ fontSize: '11px', color: '#CDA434', letterSpacing: '0.2em', marginBottom: '4px' }}>
+        <p style={{ fontSize: '11px', color: 'var(--color-oro)', letterSpacing: '0.25em', marginBottom: '6px', fontWeight: '600' }}>
           A L.·.G.·.D.·.G.·.A.·.D.·.U.·.
         </p>
-        <p style={{ fontSize: '14px', color: '#F5F5F5', fontWeight: '500', margin: 0 }}>
-          Logia Sanitas Sanitatum N°763
+        <p style={{ fontSize: '20px', color: '#ffffff', margin: 0, fontFamily: 'var(--font-baskerville)', letterSpacing: '0.02em' }}>
+          Aug.·. y Resp.·. Logia Unión N° 17
         </p>
-        <p style={{ fontSize: '11px', color: '#9e9b8e', margin: '4px 0 0' }}>
-          Área reservada
+        <p style={{ fontSize: '12px', color: 'var(--color-oro)', margin: '6px 0 0', textTransform: 'uppercase', letterSpacing: '0.1em' }}>
+          Área Reservada
         </p>
       </div>
 
-      <div style={{ backgroundColor: '#2a2a2a', padding: '2.5rem', borderRadius: '12px', width: '100%', maxWidth: '360px', border: '1px solid #CDA434' }}>
+      <div style={{ backgroundColor: '#ffffff', padding: '2.5rem', borderRadius: '12px', width: '100%', maxWidth: '380px', border: '1px solid rgba(207, 181, 59, 0.5)', boxShadow: '0 10px 25px rgba(0,0,0,0.2)' }}>
         <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
           
           {error && (
-            <div style={{ backgroundColor: '#3a1c1c', color: '#e88e8e', padding: '0.75rem', borderRadius: '8px', fontSize: '13px', textAlign: 'center', border: '1px solid #e88e8e' }}>
+            <div style={{ backgroundColor: '#FCEBEB', color: '#B33A3A', padding: '1rem', borderRadius: '8px', fontSize: '13px', textAlign: 'center', border: '1px solid #F8D7D7', fontWeight: '500' }}>
               {error}
             </div>
           )}
 
           <div>
-            <label style={{ display: 'block', fontSize: '12px', color: '#CDA434', marginBottom: '8px' }}>Correo Electrónico</label>
+            <label style={{ display: 'block', fontSize: '12px', fontWeight: '700', color: 'var(--color-institucional)', marginBottom: '8px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+              Correo Electrónico
+            </label>
             <input
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="tu@correo.com"
-              style={{ width: '100%', padding: '10px 12px', borderRadius: '6px', border: '1px solid #555', backgroundColor: '#1C1C1C', color: '#F5F5F5', fontSize: '14px', outline: 'none', boxSizing: 'border-box' }}
+              style={{ width: '100%', padding: '12px 14px', borderRadius: '8px', border: '1px solid #d1d0c8', backgroundColor: '#fafaf8', color: 'var(--color-institucional)', fontSize: '14px', outline: 'none', boxSizing: 'border-box', fontFamily: 'var(--font-montserrat)', transition: 'border-color 0.2s' }}
+              onFocus={e => e.target.style.borderColor = 'var(--color-oro)'}
+              onBlur={e => e.target.style.borderColor = '#d1d0c8'}
               required
             />
           </div>
 
           <div>
-            <label style={{ display: 'block', fontSize: '12px', color: '#CDA434', marginBottom: '8px' }}>Contraseña</label>
+            <label style={{ display: 'block', fontSize: '12px', fontWeight: '700', color: 'var(--color-institucional)', marginBottom: '8px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+              Palabra de Pase
+            </label>
             <input
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="••••••••"
-              style={{ width: '100%', padding: '10px 12px', borderRadius: '6px', border: '1px solid #555', backgroundColor: '#1C1C1C', color: '#F5F5F5', fontSize: '14px', outline: 'none', boxSizing: 'border-box' }}
+              style={{ width: '100%', padding: '12px 14px', borderRadius: '8px', border: '1px solid #d1d0c8', backgroundColor: '#fafaf8', color: 'var(--color-institucional)', fontSize: '14px', outline: 'none', boxSizing: 'border-box', fontFamily: 'var(--font-montserrat)', transition: 'border-color 0.2s' }}
+              onFocus={e => e.target.style.borderColor = 'var(--color-oro)'}
+              onBlur={e => e.target.style.borderColor = '#d1d0c8'}
               required
             />
           </div>
@@ -102,7 +115,23 @@ export default function Login() {
           <button
             type="submit"
             disabled={cargando}
-            style={{ marginTop: '0.5rem', backgroundColor: '#CDA434', color: '#1C1C1C', padding: '12px', borderRadius: '6px', border: 'none', fontSize: '14px', fontWeight: '600', cursor: cargando ? 'not-allowed' : 'pointer', transition: 'background-color 0.2s', opacity: cargando ? 0.7 : 1 }}
+            style={{ 
+              marginTop: '0.5rem', 
+              backgroundColor: 'var(--color-institucional)', 
+              color: 'var(--color-oro)', 
+              padding: '14px', 
+              borderRadius: '8px', 
+              border: '1px solid var(--color-oro)', 
+              fontSize: '14px', 
+              fontWeight: '600', 
+              cursor: cargando ? 'not-allowed' : 'pointer', 
+              transition: 'all 0.2s', 
+              opacity: cargando ? 0.7 : 1,
+              fontFamily: 'var(--font-montserrat)',
+              boxShadow: '0 4px 6px rgba(0,0,0,0.05)'
+            }}
+            onMouseOver={e => !cargando && (e.currentTarget.style.backgroundColor = '#111122')}
+            onMouseOut={e => !cargando && (e.currentTarget.style.backgroundColor = 'var(--color-institucional)')}
           >
             {cargando ? 'Autenticando...' : 'Ingresar al Templo'}
           </button>
