@@ -17,7 +17,7 @@ export default function LibroAsistenciasPage() {
   const [enviandoConvocatoria, setEnviandoConvocatoria] = useState(null)
 
   const [nuevaTenida, setNuevaTenida] = useState({
-    fecha: new Date().toISOString().split('T')[0],
+    fecha: new Date().toISOString().split('T'), 
     tipo: 'ordinaria',
     grado: 1,
     acta_nro: ''
@@ -39,27 +39,32 @@ export default function LibroAsistenciasPage() {
     cargarTenidas()
   }, [])
 
-  const handleAbrirTenida = async (e) => {
+const handleAbrirTenida = async (e) => {
     e.preventDefault()
     setAbriendoNueva(true)
 
+    // Preparamos los datos asegurando los tipos correctos para evitar el error {}
+    const datosParaInsertar = {
+      fecha: nuevaTenida.fecha, // Asegurarte que el estado initial tenga el
+      tipo: nuevaTenida.tipo,
+      grado: parseInt(nuevaTenida.grado),
+      // Convertimos a número si hay algo, sino mandamos null
+      acta_nro: nuevaTenida.acta_nro ? parseInt(nuevaTenida.acta_nro) : null,
+      estado: 'abierta'
+    }
+
     const { data, error } = await supabase
       .from('tenidas')
-      .insert([{
-        fecha: nuevaTenida.fecha,
-        tipo: nuevaTenida.tipo,
-        grado: parseInt(nuevaTenida.grado),
-        acta_nro: nuevaTenida.acta_nro || null,
-        estado: 'abierta'
-      }])
+      .insert([datosParaInsertar])
       .select()
       .single()
 
     if (!error && data) {
-      // Viajamos a la pantalla de la tenida para pasar lista
       router.push(`/panel/secretaria/tenidas/${data.id}`)
     } else {
-      console.error('Error al abrir tenida:', error)
+      // Si falla, esto nos va a decir EXACTAMENTE por qué en la consola del navegador
+      console.error('Error detallado de Supabase:', error)
+      alert(`No se pudo abrir la tenida: ${error?.message || 'Error desconocido'}`)
       setAbriendoNueva(false)
     }
   }

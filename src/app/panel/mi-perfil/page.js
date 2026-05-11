@@ -13,12 +13,12 @@ export default function MiPerfilPage() {
 
   const cargarDatosPerfil = useCallback(async () => {
     try {
+      // 1. Traemos los datos del hermano (SIN pedir los pagos anidados)
       const { data, error } = await supabase
         .from('hermanos')
         .select(`
           id, nombre, apellido, email, telefono, grado, saldo,
           fecha_iniciacion, fecha_aumento, fecha_exaltacion, created_at,
-          pagos (id, monto, fecha),
           planchas (id, titulo, estado, fecha_presentacion, fecha_lectura),
           asistencia_instrucciones (
             presente,
@@ -35,32 +35,37 @@ export default function MiPerfilPage() {
       if (error) throw error
 
       if (data) {
-        // --- TESORERÍA (Ahora mira el Saldo Real) ---
-        const estaAlDia = data.saldo >= 0; // Si es 0 o mayor, está a plomo
-        
+        // --- NUEVA LÓGICA INFALIBLE PARA EL ÚLTIMO PAGO ---
+        const estaAlDia = data.saldo >= 0; 
         let ultimoMesPagoStr = 'Sin registros'
-        const pagos = data.pagos || []
-        if (pagos.length > 0) {
-          const pagosOrdenados = pagos.sort((a, b) => new Date(b.fecha) - new Date(a.fecha))
-          const ultimoPago = pagosOrdenados
-          // Corrección en la lectura de la fecha
-          const [yyyy, mm] = ultimoPago.fecha.split('T').split('-')
+
+        // Le preguntamos DIRECTAMENTE a la tabla pagos, pidiendo que la base de datos ordene
+        const { data: pagosData, error: errPagos } = await supabase
+          .from('pagos')
+          .select('fecha')
+          .eq('hermano_id', data.id)
+          .order('fecha', { ascending: false })
+          .limit(1)
+
+        // Si encontró un pago, sacamos el mes y el año
+        if (!errPagos && pagosData && pagosData.length > 0 && pagosData.fecha) {
+          const fechaLimpia = pagosData.fecha.split('T')
+          const [yyyy, mm] = fechaLimpia.split('-')
           ultimoMesPagoStr = `${mm}/${yyyy}`
         }
 
         // --- TRAZADOS ---
         const planchas = data.planchas || []
         
-        // --- ASISTENCIA A INSTRUCCIONES (Solo importan para G1 y G2) ---
+        // --- ASISTENCIA A INSTRUCCIONES ---
         const asistenciasInst = data.asistencia_instrucciones || []
         const clasesTotales = asistenciasInst.length
         const clasesPresente = asistenciasInst.filter(a => a.presente).length
         const porcentajeInstruccion = clasesTotales > 0 ? Math.round((clasesPresente / clasesTotales) * 100) : 0
 
-        // --- ASISTENCIA A TENIDAS (Importa para todos) ---
+        // --- ASISTENCIA A TENIDAS ---
         const asistenciasTenidas = data.asistencias || []
         const tenidasTotales = asistenciasTenidas.length
-        // Asumimos que el estado guardado es 'Presente' (Ajustalo si usás otra palabra)
         const tenidasPresente = asistenciasTenidas.filter(a => a.estado?.toLowerCase() === 'presente').length
         const porcentajeTenidas = tenidasTotales > 0 ? Math.round((tenidasPresente / tenidasTotales) * 100) : 0
 
@@ -88,35 +93,33 @@ export default function MiPerfilPage() {
     }
   }, [usuario?.email])
 
-  // Es lo que da la orden de buscar los datos
   useEffect(() => {
     if (usuario?.email) {
       cargarDatosPerfil()
     }
   }, [cargarDatosPerfil, usuario])
 
-  // Si está cargando el login o los datos del perfil, mostramos el mensaje
   if (cargandoAuth || cargando) return <div style={{ padding: '3rem', textAlign: 'center', color: 'var(--color-gris)', fontFamily: 'var(--font-montserrat)' }}>Buscando tu expediente en Secretaría...</div>
   if (!perfil) return <div style={{ padding: '3rem', textAlign: 'center', color: '#B33A3A', fontWeight: '600', fontFamily: 'var(--font-montserrat)' }}>No se pudo encontrar tu registro. Verificá que tu email esté correcto.</div>
   
   return (
     <div style={{ maxWidth: '1000px', paddingBottom: '3rem', fontFamily: 'var(--font-montserrat)' }}>
       {/* Cabecera del Perfil */}
-      <div style={{ marginBottom: '2.5rem', display: 'flex', alignItems: 'center', gap: '24px', paddingBottom: '2rem', borderBottom: '1px solid rgba(207, 181, 59, 0.2)' }}>
-        <div style={{ width: '85px', height: '85px', backgroundColor: '#fafaf8', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', border: '2px solid var(--color-oro)', boxShadow: '0 4px 10px rgba(207, 181, 59, 0.15)' }}>
-          <User size={42} color="var(--color-institucional)" />
+      <div style={{ marginBottom: '2rem', display: 'flex', alignItems: 'center', gap: '20px', paddingBottom: '1.5rem', borderBottom: '1px solid rgba(207, 181, 59, 0.2)' }}>
+        <div style={{ width: '80px', height: '80px', backgroundColor: '#fafaf8', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', border: '2px solid var(--color-oro)', boxShadow: '0 4px 10px rgba(207, 181, 59, 0.15)' }}>
+          <User size={40} color="var(--color-institucional)" />
         </div>
         <div>
-          <h1 style={{ fontSize: '32px', color: 'var(--color-institucional)', margin: '0 0 6px', fontWeight: '600', fontFamily: 'var(--font-baskerville)' }}>{perfil.nombre} {perfil.apellido}</h1>
+          <h1 style={{ fontSize: '30px', color: 'var(--color-institucional)', margin: '0 0 4px', fontWeight: '600', fontFamily: 'var(--font-baskerville)' }}>{perfil.nombre} {perfil.apellido}</h1>
           <p style={{ color: 'var(--color-gris)', margin: 0, display: 'flex', alignItems: 'center', gap: '8px', fontSize: '15px', fontWeight: '500' }}>
-            <Shield size={18} color="var(--color-oro)" /> 
+            <Shield size={16} color="var(--color-oro)" /> 
             {perfil.grado === 1 ? 'Aprendiz Masón' : perfil.grado === 2 ? 'Compañero Masón' : 'Maestro Masón'}
           </p>
         </div>
       </div>
 
       {/* Grid de Tarjetas de Estado */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '1.5rem' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '1.5rem' }}>
         
         {/* Tarjeta de Tesorería */}
         <div style={{ backgroundColor: '#fff', border: '1px solid rgba(207, 181, 59, 0.2)', borderRadius: '12px', padding: '1.5rem', boxShadow: '0 2px 8px rgba(0,0,0,0.03)', display: 'flex', flexDirection: 'column' }}>
@@ -175,7 +178,7 @@ export default function MiPerfilPage() {
           </div>
         </div>
 
-        {/* Tarjeta de Asistencia a Tenidas (Visible para TODOS) */}
+        {/* Tarjeta de Asistencia a Tenidas */}
         <div style={{ backgroundColor: '#fff', border: '1px solid rgba(207, 181, 59, 0.2)', borderRadius: '12px', padding: '1.5rem', boxShadow: '0 2px 8px rgba(0,0,0,0.03)' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1.5rem', borderBottom: '1px solid rgba(207, 181, 59, 0.15)', paddingBottom: '10px' }}>
             <h3 style={{ fontSize: '13px', color: 'var(--color-institucional)', textTransform: 'uppercase', letterSpacing: '0.05em', margin: 0, fontWeight: '700' }}>Asistencia a Tenidas</h3>
@@ -198,7 +201,7 @@ export default function MiPerfilPage() {
           </div>
         </div>
 
-        {/* Tarjeta de Asistencia a Instrucción (SOLO GRADO 1 y 2) */}
+        {/* Tarjeta de Asistencia a Instrucción */}
         {perfil.grado < 3 && (
           <div style={{ backgroundColor: '#fff', border: '1px solid rgba(207, 181, 59, 0.2)', borderRadius: '12px', padding: '1.5rem', boxShadow: '0 2px 8px rgba(0,0,0,0.03)' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1.5rem', borderBottom: '1px solid rgba(207, 181, 59, 0.15)', paddingBottom: '10px' }}>
@@ -246,23 +249,15 @@ export default function MiPerfilPage() {
             )}
           </div>
         </div>
-      </div> {/* <-- FIN DEL GRID DE TARJETAS */}
+      </div> 
 
       {/* SECCIÓN DE BIBLIOTECAS DE ESTUDIO */}
       <div style={{ marginTop: '3rem' }}>
         <h3 style={{ fontSize: '22px', color: 'var(--color-institucional)', marginBottom: '1.5rem', fontWeight: '600', fontFamily: 'var(--font-baskerville)' }}>Biblioteca de Instrucción</h3>
         
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.25rem' }}>
-          {/* Biblioteca de Aprendiz (Visible para todos) */}
           {perfil.grado >= 1 && (
-            <a 
-              href="#" 
-              target="_blank" 
-              rel="noreferrer" 
-              style={estiloBotonBiblioteca}
-              onMouseOver={e => { e.currentTarget.style.transform = 'translateY(-3px)'; e.currentTarget.style.boxShadow = '0 6px 12px rgba(0,0,0,0.05)' }}
-              onMouseOut={e => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = '0 2px 4px rgba(0,0,0,0.02)' }}
-            >
+            <a href="#" target="_blank" rel="noreferrer" style={estiloBotonBiblioteca}>
               <div style={estiloIconoBiblio}><BookOpen size={20} /></div>
               <div style={{ textAlign: 'left' }}>
                 <p style={estiloTituloBiblio}>Primer Grado</p>
@@ -271,16 +266,8 @@ export default function MiPerfilPage() {
             </a>
           )}
 
-          {/* Biblioteca de Compañero (Visible solo para Grado 2 y 3) */}
           {perfil.grado >= 2 && (
-            <a 
-              href="#" 
-              target="_blank" 
-              rel="noreferrer" 
-              style={estiloBotonBiblioteca}
-              onMouseOver={e => { e.currentTarget.style.transform = 'translateY(-3px)'; e.currentTarget.style.boxShadow = '0 6px 12px rgba(0,0,0,0.05)' }}
-              onMouseOut={e => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = '0 2px 4px rgba(0,0,0,0.02)' }}
-            >
+            <a href="#" target="_blank" rel="noreferrer" style={estiloBotonBiblioteca}>
               <div style={estiloIconoBiblio}><BookOpen size={20} /></div>
               <div style={{ textAlign: 'left' }}>
                 <p style={estiloTituloBiblio}>Segundo Grado</p>
@@ -289,16 +276,8 @@ export default function MiPerfilPage() {
             </a>
           )}
 
-          {/* Biblioteca de Maestro (Visible solo para Grado 3) */}
           {perfil.grado >= 3 && (
-            <a 
-              href="#" 
-              target="_blank" 
-              rel="noreferrer" 
-              style={estiloBotonBiblioteca}
-              onMouseOver={e => { e.currentTarget.style.transform = 'translateY(-3px)'; e.currentTarget.style.boxShadow = '0 6px 12px rgba(0,0,0,0.05)' }}
-              onMouseOut={e => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = '0 2px 4px rgba(0,0,0,0.02)' }}
-            >
+            <a href="#" target="_blank" rel="noreferrer" style={estiloBotonBiblioteca}>
               <div style={estiloIconoBiblio}><BookOpen size={20} /></div>
               <div style={{ textAlign: 'left' }}>
                 <p style={estiloTituloBiblio}>Tercer Grado</p>
@@ -311,9 +290,9 @@ export default function MiPerfilPage() {
 
     </div>
   )
-} // <-- ACÁ CIERRA CORRECTAMENTE EL COMPONENTE
+}
 
-// --- ESTILOS DE LA BIBLIOTECA (Se colocan fuera de la función principal) ---
+// --- ESTILOS DE LA BIBLIOTECA ---
 const estiloBotonBiblioteca = {
   display: 'flex',
   alignItems: 'center',
@@ -340,18 +319,5 @@ const estiloIconoBiblio = {
   border: '1px solid rgba(207, 181, 59, 0.3)'
 }
 
-const estiloTituloBiblio = {
-  margin: 0,
-  fontSize: '15px',
-  fontWeight: '700',
-  color: 'var(--color-institucional)'
-}
-
-const estiloSubBiblio = {
-  margin: '2px 0 0',
-  fontSize: '11px',
-  color: 'var(--color-gris)',
-  textTransform: 'uppercase',
-  letterSpacing: '0.05em',
-  fontWeight: '600'
-}
+const estiloTituloBiblio = { margin: 0, fontSize: '15px', fontWeight: '700', color: 'var(--color-institucional)' }
+const estiloSubBiblio = { margin: '2px 0 0', fontSize: '11px', color: 'var(--color-gris)', textTransform: 'uppercase', letterSpacing: '0.05em', fontWeight: '600' }
