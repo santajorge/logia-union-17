@@ -13,12 +13,14 @@ export default function MiPerfilPage() {
 
   const cargarDatosPerfil = useCallback(async () => {
     try {
-      // 1. Traemos los datos del hermano (SIN pedir los pagos anidados)
+      console.log("🔍 BUSCANDO DATOS PARA EL EMAIL:", usuario?.email)
+
       const { data, error } = await supabase
         .from('hermanos')
         .select(`
           id, nombre, apellido, email, telefono, grado, saldo,
           fecha_iniciacion, fecha_aumento, fecha_exaltacion, created_at,
+          pagos (id, monto, fecha),
           planchas (id, titulo, estado, fecha_presentacion, fecha_lectura),
           asistencia_instrucciones (
             presente,
@@ -32,38 +34,37 @@ export default function MiPerfilPage() {
         .eq('email', usuario?.email)
         .single()
 
+      // --- ZONA DE DEBUGGING ---
+      console.log("🚨 REPORTE DE ERROR DE SUPABASE:", error)
+      console.log("📦 DATOS COMPLETOS DEL HERMANO:", data)
+      console.log("💰 HISTORIAL DE PAGOS RECIBIDO:", data?.pagos)
+      // -------------------------
+
       if (error) throw error
 
       if (data) {
-        // --- NUEVA LÓGICA INFALIBLE PARA EL ÚLTIMO PAGO ---
         const estaAlDia = data.saldo >= 0; 
+        
         let ultimoMesPagoStr = 'Sin registros'
-
-        // Le preguntamos DIRECTAMENTE a la tabla pagos, pidiendo que la base de datos ordene
-        const { data: pagosData, error: errPagos } = await supabase
-          .from('pagos')
-          .select('fecha')
-          .eq('hermano_id', data.id)
-          .order('fecha', { ascending: false })
-          .limit(1)
-
-        // Si encontró un pago, sacamos el mes y el año
-        if (!errPagos && pagosData && pagosData.length > 0 && pagosData.fecha) {
-          const fechaLimpia = pagosData.fecha.split('T')
-          const [yyyy, mm] = fechaLimpia.split('-')
-          ultimoMesPagoStr = `${mm}/${yyyy}`
+        const pagos = data.pagos || []
+        
+        if (pagos.length > 0) {
+          const pagosOrdenados = pagos.sort((a, b) => new Date(b.fecha) - new Date(a.fecha))
+          const ultimoPago = pagosOrdenados 
+          
+          if (ultimoPago && ultimoPago.fecha) {
+            const fechaLimpia = ultimoPago.fecha.split('T')
+            const [yyyy, mm] = fechaLimpia.split('-')
+            ultimoMesPagoStr = `${mm}/${yyyy}`
+          }
         }
 
-        // --- TRAZADOS ---
         const planchas = data.planchas || []
-        
-        // --- ASISTENCIA A INSTRUCCIONES ---
         const asistenciasInst = data.asistencia_instrucciones || []
         const clasesTotales = asistenciasInst.length
         const clasesPresente = asistenciasInst.filter(a => a.presente).length
         const porcentajeInstruccion = clasesTotales > 0 ? Math.round((clasesPresente / clasesTotales) * 100) : 0
 
-        // --- ASISTENCIA A TENIDAS ---
         const asistenciasTenidas = data.asistencias || []
         const tenidasTotales = asistenciasTenidas.length
         const tenidasPresente = asistenciasTenidas.filter(a => a.estado?.toLowerCase() === 'presente').length
@@ -87,7 +88,7 @@ export default function MiPerfilPage() {
         })
       }
     } catch (error) {
-      console.error("Error al cargar el perfil:", error.message)
+      console.error("❌ Error atrapado en el catch:", error.message)
     } finally {
       setCargando(false)
     }
@@ -293,31 +294,7 @@ export default function MiPerfilPage() {
 }
 
 // --- ESTILOS DE LA BIBLIOTECA ---
-const estiloBotonBiblioteca = {
-  display: 'flex',
-  alignItems: 'center',
-  gap: '16px',
-  padding: '1.25rem',
-  backgroundColor: '#fff',
-  border: '1px solid rgba(207, 181, 59, 0.2)',
-  borderRadius: '12px',
-  textDecoration: 'none',
-  color: 'var(--color-institucional)',
-  transition: 'all 0.2s ease',
-  boxShadow: '0 2px 4px rgba(0,0,0,0.02)'
-}
-
-const estiloIconoBiblio = {
-  width: '46px',
-  height: '46px',
-  backgroundColor: '#fafaf8',
-  borderRadius: '10px',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  color: 'var(--color-oro)',
-  border: '1px solid rgba(207, 181, 59, 0.3)'
-}
-
+const estiloBotonBiblioteca = { display: 'flex', alignItems: 'center', gap: '16px', padding: '1.25rem', backgroundColor: '#fff', border: '1px solid rgba(207, 181, 59, 0.2)', borderRadius: '12px', textDecoration: 'none', color: 'var(--color-institucional)', transition: 'all 0.2s ease', boxShadow: '0 2px 4px rgba(0,0,0,0.02)' }
+const estiloIconoBiblio = { width: '46px', height: '46px', backgroundColor: '#fafaf8', borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--color-oro)', border: '1px solid rgba(207, 181, 59, 0.3)' }
 const estiloTituloBiblio = { margin: 0, fontSize: '15px', fontWeight: '700', color: 'var(--color-institucional)' }
 const estiloSubBiblio = { margin: '2px 0 0', fontSize: '11px', color: 'var(--color-gris)', textTransform: 'uppercase', letterSpacing: '0.05em', fontWeight: '600' }
